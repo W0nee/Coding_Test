@@ -74,6 +74,8 @@ void BFS()
 
 int main(void)
 {
+	//	freopen("B1261_input.txt", "r", stdin);
+	
 	scanf("%d %d", &col, &row);
 	for(int i = 0; i < row; i++)
 	{
