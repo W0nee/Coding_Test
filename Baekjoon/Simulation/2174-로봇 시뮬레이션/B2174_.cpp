@@ -37,50 +37,41 @@ int safe(int x, int y)
 
 void move(int num, char cmd)
 {
+	int x = robot[num].x;
+	int y = robot[num].y;
+	
 	if(cmd == 'L')
 	{
-		int dir = robot[num].dir;
-		dir -= 1;
-		if(dir == -1) dir = 3;
-		
-		robot[num].dir = dir;
+		robot[num].dir = (robot[num].dir-1) == -1 ? 3 : robot[num].dir-1;
 	}
 	else if(cmd == 'R')
 	{
-		int dir = robot[num].dir;
-		dir = (dir + 1) % 4;
-		
-		robot[num].dir = dir;
+		robot[num].dir = (robot[num].dir+1) == 4 ? 0 : robot[num].dir+1;
 	}
 	else if(cmd == 'F')
 	{
-		int x = robot[num].x;
-		int y = robot[num].y;
 		int dir = robot[num].dir;
+		int nx = x+dx[dir];
+		int ny = y+dy[dir];
 		
-		int nx = x + dx[dir];
-		int ny = y + dy[dir];
-		
-//		cout << nx << " " << ny << endl;
-		
-		if(safe(nx, ny) == 0)
+		if(safe(nx, ny))
 		{
-			cout << "Robot " << num << " crashes into the wall" << endl;
-			Flag = true;
-			return;
-		}
-		
-		if(Map[ny][nx] == 0)
-		{
-			Map[y][x] = 0;
-			Map[ny][nx] = num;
+			if(Map[ny][nx] != 0)
+			{
+				cout << "Robot " << num << " crashes into robot " << Map[ny][nx];
+				Flag = true;
+				return;
+			}
 			
 			robot[num].x = nx;
 			robot[num].y = ny;
+			
+			Map[y][x] = 0;
+			Map[ny][nx] = num;
 		}
 		else
 		{
-			cout << "Robot " << num << " crashes into robot " << Map[ny][nx] << endl;
+			cout << "Robot " << num << " crashes into the wall";
 			Flag = true;
 			return;
 		}

@@ -50,8 +50,8 @@ int main(void)
 	{
 		if(std <= v[i].first)
 		{
-			cnt++;
 			std = v[i].second;
+			cnt++;
 		}
 	}
 	

@@ -11,55 +11,38 @@ int Map[70][70];
 
 int check(int x, int y, int size)
 {
-	int zeroCnt = 0;
-	int oneCnt = 0;
+	int val = Map[x][y];
 	
 	for(int i = x; i < x+size; i++)
 	{
 		for(int j = y; j < y+size; j++)
 		{
-			if(Map[i][j] == 0)
+			if(val != Map[i][j])
 			{
-				zeroCnt++;
-			}
-			else
-			{
-				oneCnt++;
+				return 0;
 			}
 		}
 	}
 	
-	if(zeroCnt == size*size)
-	{
-		return 0;
-	}
-	else if(oneCnt == size*size)
-	{
-		return 1;
-	}
-	else
-	{
-		return -1;
-	}
+	return 1;
 }
 
-string solve(int x, int y, int size)
+void solve(int x, int y, int size)
 {
-	if(check(x, y, size) == 0)
+	if(check(x, y, size))
 	{
-		return "0";
-	}
-	else if(check(x, y, size) == 1)
-	{
-		return "1";		
+		cout << Map[x][y];
+		return;	
 	}
 	
-	string str1 = solve(x, y, size/2);
-	string str2 = solve(x, y+size/2, size/2);
-	string str3 = solve(x+size/2, y, size/2);
-	string str4 = solve(x+size/2, y+size/2, size/2);
+	cout << "(";
+	solve(x, y, size/2);
+	solve(x, y+size/2, size/2);
+	solve(x+size/2, y, size/2);
+	solve(x+size/2, y+size/2, size/2);
+	cout << ")";
 	
-	return "(" + str1 + str2 + str3 + str4 + ")";
+	return;
 }
 
 int main(void)
@@ -76,7 +59,7 @@ int main(void)
 		}
 	}
 	
-	cout << solve(1, 1, N);
+	solve(1, 1, N);
 	
 	return 0;
 }

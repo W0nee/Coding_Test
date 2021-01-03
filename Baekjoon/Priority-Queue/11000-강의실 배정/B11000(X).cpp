@@ -26,21 +26,28 @@ int main(void)
 	
 	sort(v.begin(), v.end());
 	
-	priority_queue<int, vector<int>, greater<int>> pq;
+	priority_queue<int> pq;
 	
-	pq.push(v[0].second);
-	ans = 1;
-	
-	for(int i = 1; i < v.size(); i++)
+	for(int i = v.size()-1; i >= 0; i--)
 	{
-		if(v[i].first < pq.top())
+		if(!pq.empty())
 		{
-			pq.push(v[i].second);
+			if(v[i].second > pq.top())
+			{
+				pq.push(v[i].first);
+				cout << "only push : " << v[i].first << endl;
+			}
+			else
+			{
+				cout << "pq.top : " << pq.top() << endl;
+ 				pq.pop();
+				pq.push(v[i].first);
+				cout << "pop push : " << v[i].first << endl;
+			}	
 		}
 		else
 		{
-			pq.pop();
-			pq.push(v[i].second);
+			pq.push(v[i].first);
 		}
 		
 		ans = max(ans, (int)pq.size());
@@ -50,3 +57,14 @@ int main(void)
 	
 	return 0;
 }
+
+/*
+7
+1 7
+3 10
+4 6
+9 17
+9 20
+11 12
+12 14
+*/

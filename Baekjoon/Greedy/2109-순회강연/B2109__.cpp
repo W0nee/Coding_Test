@@ -9,38 +9,38 @@ using namespace std;
 
 int N;
 vector<pair<int, int>> v;
-int Max;
+int money;
 
 int main(void)
 {
-//	freopen("B11000_input.txt", "r", stdin);
+//	freopen("B2109_input.txt", "r", stdin);
 	
 	cin >> N;
 	
 	for(int i = 0; i < N; i++)
 	{
-		int a, b;
-		cin >> a >> b;
-		v.push_back({a, b});
+		int pay, day;
+		cin >> pay >> day;
+		v.push_back({day, pay});
 	}
 	
 	sort(v.begin(), v.end());
 	
 	priority_queue<int, vector<int>, greater<int>> pq;
-	
-	for(int i = 0; i < N; i++)
+
+	for(int i = 0; i < v.size(); i++)
 	{
-		while(!pq.empty() && pq.top() <= v[i].first)
+		pq.push(v[i].second);
+		money += v[i].second;
+		
+		if(pq.size() > v[i].first)
 		{
+			money -= pq.top();
 			pq.pop();
 		}
-		
-		pq.push(v[i].second);
-		
-		Max = max(Max, (int)pq.size());
 	}
 	
-	cout << Max;
+	cout << money;
 	
 	return 0;
 }

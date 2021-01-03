@@ -9,25 +9,6 @@ vector<pair<int, int>> v;
 int date;
 int ans;
 
-bool cmp(pair<int, int> a, pair<int, int> b)
-{
-	if(a.second < b.second)
-	{
-		return true;
-	}
-	else if(a.second == b.second)
-	{
-		if(a.first < b.first)
-		{
-			return true;
-		}
-		
-		return false;
-	}
-	
-	return false;
-}
-
 int main(void)
 {
 //	freopen("B2109_input.txt", "r", stdin);
@@ -36,28 +17,27 @@ int main(void)
 	
 	for(int i = 0; i < N; i++)
 	{
-		int a, b;
-		cin >> a >> b;
+		int pay, day;
+		cin >> pay >> day;
 		
-		v.push_back({a, b});
+		v.push_back({day, pay});
 		
-		if(date < b)
+		if(date < day)
 		{
-			date = b;
+			date = day;
 		}
 	}
 	
-	sort(v.begin(), v.end(), cmp);
+	sort(v.begin(), v.end());
 	
-	priority_queue<int> pq;
+	priority_queue<int, vector<int>, less<int>> pq;
+	
 	int idx = v.size()-1;
-	
 	for(int i = date; i >= 1; i--)
 	{
-		while(v[idx].second == i)
+		while(idx >= 0 && i <= v[idx].first)
 		{
-			pq.push(v[idx].first);
-			idx--;
+			pq.push(v[idx--].second);
 		}
 		
 		if(!pq.empty())
