@@ -173,7 +173,7 @@ void combination(int idx, int cnt)
 
 int main(void)
 {
-//	freopen("B17070_input.txt", "r", stdin);
+//	freopen("B17135_input.txt", "r", stdin);
 	
 	cin >> row >> col >> D;
 	
