@@ -24,473 +24,8 @@ int Temp[10][10];
 vector<node> cctv;
 int Min = 999999999;
 
-void cctv1(int x, int y, int dir)
+void up(int x, int y)
 {
-	// ¡æ
-	if(dir == 0)
-	{
-		for(int i = y; i <= col; i++)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		}
-	}
-	// ¡é 
-	else if(dir == 1)
-	{
-		for(int i = x; i <= row; i++)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-	}
-	// ¡ç 
-	else if(dir == 2)
-	{
-		for(int i = y; i >= 1; i--)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		} 
-	}
-	// ¡è 
-	else if(dir == 3)
-	{
-		for(int i = x; i >= 1; i--)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-	}	
-} 
-
-void cctv2(int x, int y, int dir)
-{
-	// ¡ç¡æ
-	if(dir == 0 || dir == 1)
-	{
-		for(int i = y; i >= 1; i--)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		} 
-		
-		for(int i = y; i <= col; i++)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		}
-	}
-	// ¡è¡é 
-	else if(dir == 2 || dir == 3)
-	{
-		for(int i = x; i >= 1; i--)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-		
-		for(int i = x; i <= row; i++)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-	}
-}
-
-void cctv3(int x, int y, int dir)
-{
-	// ¡è¡æ
-	if(dir == 0)
-	{
-		for(int i = x; i >= 1; i--)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-		
-		for(int i = y; i <= col; i++)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		}
-	}
-	// ¡æ¡é 
-	else if(dir == 1)
-	{
-		for(int i = y; i <= col; i++)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		}
-		
-		for(int i = x; i <= row; i++)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-	}
-	// ¡ç¡é 
-	else if(dir == 2)
-	{
-		for(int i = y; i >= 1; i--)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		} 
-		
-		for(int i = x; i <= row; i++)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-	}
-	// ¡ç¡è 
-	else if(dir == 3)
-	{
-		for(int i = y; i >= 1; i--)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		} 
-		
-		for(int i = x; i >= 1; i--)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-	}	
-} 
-
-void cctv4(int x, int y, int dir)
-{
-	// ¡ç¡è¡æ
-	if(dir == 0)
-	{
-		for(int i = y; i >= 1; i--)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		} 
-		
-		for(int i = x; i >= 1; i--)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-		
-		for(int i = y; i <= col; i++)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		}
-	}
-	// ¡è¡æ¡é 
-	else if(dir == 1)
-	{
-		for(int i = x; i >= 1; i--)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-		
-		for(int i = y; i <= col; i++)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		}
-		
-		for(int i = x; i <= row; i++)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-	}
-	// ¡ç¡é¡æ 
-	else if(dir == 2)
-	{
-		for(int i = y; i >= 1; i--)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		} 
-		
-		for(int i = x; i <= row; i++)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-		
-		for(int i = y; i <= col; i++)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		}
-	}
-	// ¡ç¡è¡æ 
-	else if(dir == 3)
-	{
-		for(int i = y; i >= 1; i--)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		} 
-		
-		for(int i = x; i >= 1; i--)
-		{
-			if(1 <= Map[i][y] && Map[i][y] <= 5)
-			{
-				continue;
-			}
-			else if(Map[i][y] == 6)
-			{
-				break;
-			}
-			
-			Map[i][y] = 7;
-		}
-		
-		for(int i = y; i <= col; i++)
-		{
-			if(1 <= Map[x][i] && Map[x][i] <= 5)
-			{
-				continue;
-			}
-			else if(Map[x][i] == 6)
-			{
-				break;
-			}
-			
-			Map[x][i] = 7;
-		}
-	}	
-}
-
-void cctv5(int x, int y, int dir)
-{
-	// ¡ç¡è¡æ¡é
-	for(int i = y; i >= 1; i--)
-	{
-		if(1 <= Map[x][i] && Map[x][i] <= 5)
-		{
-			continue;
-		}
-		else if(Map[x][i] == 6)
-		{
-			break;
-		}
-		
-		Map[x][i] = 7;
-	} 
-	
 	for(int i = x; i >= 1; i--)
 	{
 		if(1 <= Map[i][y] && Map[i][y] <= 5)
@@ -504,21 +39,10 @@ void cctv5(int x, int y, int dir)
 		
 		Map[i][y] = 7;
 	}
-	
-	for(int i = y; i <= col; i++)
-	{
-		if(1 <= Map[x][i] && Map[x][i] <= 5)
-		{
-			continue;
-		}
-		else if(Map[x][i] == 6)
-		{
-			break;
-		}
-		
-		Map[x][i] = 7;
-	}
+}
 
+void down(int x, int y)
+{
 	for(int i = x; i <= row; i++)
 	{
 		if(1 <= Map[i][y] && Map[i][y] <= 5)
@@ -532,6 +56,149 @@ void cctv5(int x, int y, int dir)
 		
 		Map[i][y] = 7;
 	}
+}
+
+void left(int x, int y)
+{
+	for(int i = y; i >= 1; i--)
+	{
+		if(1 <= Map[x][i] && Map[x][i] <= 5)
+		{
+			continue;
+		}
+		else if(Map[x][i] == 6)
+		{
+			break;
+		}
+		
+		Map[x][i] = 7;
+	} 
+}
+
+void right(int x, int y)
+{
+	for(int i = y; i <= col; i++)
+	{
+		if(1 <= Map[x][i] && Map[x][i] <= 5)
+		{
+			continue;
+		}
+		else if(Map[x][i] == 6)
+		{
+			break;
+		}
+		
+		Map[x][i] = 7;
+	}
+}
+
+void cctv1(int x, int y, int dir)
+{
+	// ¡æ
+	if(dir == 0)
+	{
+		right(x, y);
+	}
+	// ¡é 
+	else if(dir == 1)
+	{
+		down(x, y);
+	}
+	// ¡ç 
+	else if(dir == 2)
+	{
+		left(x, y);
+	}
+	// ¡è 
+	else if(dir == 3)
+	{
+		up(x, y);
+	}	
+} 
+
+void cctv2(int x, int y, int dir)
+{
+	// ¡ç¡æ
+	if(dir == 0 || dir == 1)
+	{
+		left(x, y);
+		right(x, y);
+	}
+	// ¡è¡é 
+	else if(dir == 2 || dir == 3)
+	{
+		up(x, y);
+		down(x, y);
+	}
+}
+
+void cctv3(int x, int y, int dir)
+{
+	// ¡è¡æ
+	if(dir == 0)
+	{
+		up(x, y);
+		right(x, y);
+	}
+	// ¡æ¡é 
+	else if(dir == 1)
+	{
+		right(x, y);
+		down(x, y);
+	}
+	// ¡ç¡é 
+	else if(dir == 2)
+	{
+		left(x, y);
+		down(x, y);
+	}
+	// ¡ç¡è 
+	else if(dir == 3)
+	{
+		left(x, y);
+		up(x, y);
+	}	
+} 
+
+void cctv4(int x, int y, int dir)
+{
+	// ¡ç¡è¡æ
+	if(dir == 0)
+	{
+		left(x, y);
+		up(x, y);
+		right(x, y);
+	}
+	// ¡æ¡è¡é 
+	else if(dir == 1)
+	{
+		right(x, y);
+		up(x, y);
+		down(x, y);
+	}
+	// ¡ç¡é¡æ 
+	else if(dir == 2)
+	{
+		left(x, y);
+		down(x, y);
+		right(x, y);
+	}
+	// ¡ç¡è¡é
+	else if(dir == 3)
+	{
+		left(x, y);
+		up(x, y);
+		down(x, y);
+	}	
+}
+
+void cctv5(int x, int y, int dir)
+{
+	// ¡ç¡è¡æ¡é
+	left(x, y);
+	up(x, y);
+	right(x, y);
+	down(x, y);
 }
 
 void solve()
@@ -599,10 +266,7 @@ void permutation(int cnt)
 	{
 		solve();
 		Min = min(Min, count());
-//		if(count() == 2)
-//		{
-//			print();	
-//		}
+//		print();	
 		copy();
 		
 		return;
