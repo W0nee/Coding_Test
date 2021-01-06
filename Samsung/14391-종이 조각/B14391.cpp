@@ -15,14 +15,14 @@ int Map[10][10];
 int visited[10][10];
 int Max;
 
-void color_visit(int x, int y, int n, int shape)
+void make_visit(int x, int y, int n, int shape, int val)
 {
 	// 가로 
 	if(shape == 1)
 	{
 		for(int j = y; j <= y+n; j++)
 		{
-			visited[x][j] = 1;
+			visited[x][j] = val;
 		}	
 	}
 	// 세로
@@ -30,27 +30,7 @@ void color_visit(int x, int y, int n, int shape)
 	{
 		for(int i = x; i <= x+n; i++)
 		{
-			visited[i][y] = 1;
-		}
-	} 
-}
-
-void recover_visit(int x, int y, int n, int shape)
-{
-	// 가로 
-	if(shape == 1)
-	{
-		for(int j = y; j <= y+n; j++)
-		{
-			visited[x][j] = 0;
-		}	
-	}
-	// 세로
-	else
-	{
-		for(int i = x; i <= x+n; i++)
-		{
-			visited[i][y] = 0;
+			visited[i][y] = val;
 		}
 	} 
 }
@@ -151,20 +131,32 @@ void DFS(int x, int y, int sum)
 		return;
 	}
 	
-	for(int i = 1; i <= 3; i++)
+	for(int i = 0; i <= 3; i++)
 	{	
-		if(y+i <= col && check_possible(x, y, i, 1))
+		if(i == 0)
 		{
-			color_visit(x, y, i, 1);
-			DFS(x, y, sum + cal(x, y, i, 1));
-			recover_visit(x, y, i, 1);	
+			if(check_possible(x, y, i, 1))
+			{
+				make_visit(x, y, i, 1, 1);
+				DFS(x, y, sum + cal(x, y, i, 1));
+				make_visit(x, y, i, 1, 0);		
+			}
 		}
-		
-		if(x+i <= row && check_possible(x, y, i, 2))
+		else
 		{
-			color_visit(x, y, i, 2);
-			DFS(x, y, sum + cal(x, y, i, 2));
-			recover_visit(x, y, i, 2);		
+			if(y+i <= col && check_possible(x, y, i, 1))
+			{
+				make_visit(x, y, i, 1, 1);
+				DFS(x, y, sum + cal(x, y, i, 1));
+				make_visit(x, y, i, 1, 0);
+			}
+			
+			if(x+i <= row && check_possible(x, y, i, 2))
+			{
+				make_visit(x, y, i, 2, 1);
+				DFS(x, y, sum + cal(x, y, i, 2));
+				make_visit(x, y, i, 2, 0);
+			}	
 		}
 	}
 }
@@ -183,12 +175,12 @@ int main(void)
 		}
 	}
 	
-	if(row == 1 && col == 1)
-	{
-		cout << Map[1][1];
-		
-		return 0;
-	}
+//	if(row == 1 && col == 1)
+//	{
+//		cout << Map[1][1];
+//		
+//		return 0;
+//	}
 	
 	DFS(1, 1, 0);
 	
