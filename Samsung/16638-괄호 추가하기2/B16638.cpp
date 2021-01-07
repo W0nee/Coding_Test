@@ -37,9 +37,7 @@ int solve()
 	{
 		if(check[i] == 1)
 		{
-			string temp = "";
-			temp += s[i+1];
-			
+			string temp = ""; temp += s[i+1];
 			ex.push_back(to_string(cal(s[i]-'0', s[i+2]-'0', temp)));
 			i += 3;
 		}
@@ -54,13 +52,11 @@ int solve()
 	vector<string> result;
 	for(int i = 0; i < ex.size();)
 	{
-		if(ex[i] == "*")		
+		if(ex[i] == "*")
 		{
 			int num1 = stoi(result.back()); result.pop_back();
 			int num2 = stoi(ex[i+1]);
-			int val = cal(num1, num2, ex[i]);
-			
-			result.push_back(to_string(val));
+			result.push_back(to_string(cal(num1, num2, ex[i])));
 			i += 2;
 		}
 		else
@@ -84,7 +80,6 @@ void combination(int idx)
 	if(idx >= s.size())
 	{
 		Max = max(Max, solve());
-		
 		return;
 	}
 
@@ -96,7 +91,6 @@ void combination(int idx)
 		check[idx] = 0;
 		check[idx+2] = 0;	
 	}
-	
 	combination(idx+2);
 }
 

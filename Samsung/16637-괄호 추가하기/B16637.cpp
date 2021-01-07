@@ -37,9 +37,7 @@ int solve()
 	{
 		if(check[i] == 1)
 		{
-			string temp = "";
-			temp += s[i+1];
-			
+			string temp = ""; temp += s[i+1];	
 			ex.push_back(to_string(cal(s[i]-'0', s[i+2]-'0', temp)));
 			i += 3;
 		}
@@ -65,7 +63,6 @@ void combination(int idx)
 	if(idx >= s.size())
 	{
 		Max = max(Max, solve());
-		
 		return;
 	}
 
@@ -77,7 +74,6 @@ void combination(int idx)
 		check[idx] = 0;
 		check[idx+2] = 0;	
 	}
-	
 	combination(idx+2);
 }
 
