@@ -16,6 +16,16 @@ int visited[15][15];
 int paper[6] = {0, 5, 5, 5, 5, 5};
 int Min = 999999999;
 
+int safe(int x, int y)
+{
+	if(1 <= x && x <= 10 && 1 <= y && y <= 10)
+	{
+		return 1;
+	}
+	
+	return 0;
+}
+
 int check_possible(int x, int y, int n)
 {
 	int cnt = 0;
@@ -41,24 +51,13 @@ int check_possible(int x, int y, int n)
 	}
 }
 
-void color_visit(int x, int y, int n)
+void make_visit(int x, int y, int n, int val)
 {
 	for(int i = x; i < x+n; i++)
 	{
 		for(int j = y; j < y+n; j++)
 		{
-			visited[i][j] = 1;
-		}
-	}
-}
-
-void recover_visit(int x, int y, int n)
-{
-	for(int i = x; i < x+n; i++)
-	{
-		for(int j = y; j < y+n; j++)
-		{
-			visited[i][j] = 0;
+			visited[i][j] = val;
 		}
 	}
 }
@@ -111,13 +110,14 @@ void solve(int x, int y, int ans)
 	
 	for(int i = 1; i <= 5; i++)
 	{
-		if(paper[i] >= 1 && check_possible(x, y, i))
+//		if(paper[i] >= 1 && check_possible(x, y, i))
+		if(paper[i] >= 1 && safe(x+i-1, y+i-1) && check_possible(x, y, i))
 		{
-			color_visit(x, y, i);
+			make_visit(x, y, i, 1);
 			paper[i]--;
 			solve(x, y, ans+1);
 			paper[i]++;
-			recover_visit(x, y, i);	
+			make_visit(x, y, i, 0);
 		}	
 	}	
 }
