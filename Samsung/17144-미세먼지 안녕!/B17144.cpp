@@ -11,16 +11,16 @@
 using namespace std;
 
 int row, col;
-int startX, startY, N;
-int Map[30][30];
-int dice[7];
+int T;
+int Map[60][60];
+vector<pair<int, int>> clean;
 
-int dx[5] = {0, 0, 0, -1, 1};
-int dy[5] = {0, 1, -1, 0, 0};
+int dx[4] = {0, 0, -1, 1}; // 동서남북 
+int dy[4] = {1, -1, 0, 0}; // 동서남북 
 
 int safe(int x, int y)
 {
-	if(0 <= x && x < row && 0 <= y && y < col)
+	if(1 <= x && x <= row && 1 <= y && y <= col)
 	{
 		return 1;
 	}
@@ -28,77 +28,179 @@ int safe(int x, int y)
 	return 0;
 }
 
-void move(int dir)
+vector<pair<int, int>> mise_init()
 {
-	int temp[7] = {0};
-	for(int i = 1; i <= 6; i++)
+	vector<pair<int, int>> mise;
+	
+	for(int i = 1; i <= row; i++)
 	{
-		temp[i] = dice[i];
+		for(int j = 1; j <= col; j++)
+		{
+			if(Map[i][j] != -1 || Map[i][j] != 0)
+			{
+				mise.push_back({i, j});
+			}
+		}
 	}
 	
-	if(dir == 1)
-	{
-		dice[3] = temp[6];
-		dice[1] = temp[3];
-		dice[4] = temp[1];
-		dice[6] = temp[4];
-	}
-	else if(dir == 2)
-	{
-		dice[4] = temp[6];
-		dice[1] = temp[4];
-		dice[3] = temp[1];
-		dice[6] = temp[3];
-	}
-	else if(dir == 3)
-	{
-		dice[5] = temp[6];
-		dice[1] = temp[5];
-		dice[2] = temp[1];
-		dice[6] = temp[2];
-	}
-	else if(dir == 4)
-	{
-		dice[2] = temp[6];
-		dice[1] = temp[2];
-		dice[5] = temp[1];
-		dice[6] = temp[5];
-	}	
+	return mise;
 }
 
-void solve(int x, int y)
+void mise_spread()
 {
-	for(int i = 1; i <= N; i++)
+	vector<pair<int, int>> mise = mise_init();
+	int Temp[60][60] = {0};
+	
+	for(int k = 0; k < mise.size(); k++)
 	{
-		int dir;
-		cin >> dir;
+		int x = mise[k].first;
+		int y = mise[k].second;
 		
-		int nx = x+dx[dir];
-		int ny = y+dy[dir];
+		int val = Map[x][y] / 5;
+		int cnt = 0;
 		
-		if(safe(nx, ny) == 0)
+		for(int i = 0; i < 4; i++)
 		{
-			continue;
+			int nx = x+dx[i];
+			int ny = y+dy[i];
+			
+			if(safe(nx, ny) == 0)
+			{
+				continue;
+			}
+			
+			if(Map[nx][ny] != -1)
+			{
+				Temp[nx][ny] += val;
+				cnt++;
+			}
 		}
 		
-		move(dir);
-		//  주사위를 굴렸을 때, 이동한 칸에 쓰여 있는 수가 0이면, 주사위의 바닥면에 쓰여 있는 수가 칸에 복사된다.
-		if(Map[nx][ny] == 0)
+		Map[x][y] = Map[x][y] - (val * cnt) ? Map[x][y] - (val * cnt) : 0;		
+	}
+	
+	for(int i = 1; i <= row; i++)
+	{
+		for(int j = 1; j <= col; j++)
 		{
-			Map[nx][ny] = dice[6];
+			Map[i][j] += Temp[i][j];
 		}
-		// 0이 아닌 경우에는 칸에 쓰여 있는 수가 주사위의 바닥면으로 복사되며, 칸에 쓰여 있는 수는 0이 된다.
-		else
+	}
+}
+
+void clean_spread()
+{
+	int Temp[60][60] = {0};
+	
+	for(int i = 1; i <= row; i++)
+	{
+		for(int j = 1; j <= col; j++)
 		{
-			dice[6] = Map[nx][ny];
-			Map[nx][ny] = 0;
+			Temp[i][j] = Map[i][j];
 		}
+	}
+	
+	for(int k = 0; k < clean.size(); k++)
+	{
+		int x = clean[k].first;
+		int y = clean[k].second;
+
+		Map[x][y+1] = 0;
 		
-		// 이동할 때마다 주사위의 윗 면에 쓰여 있는 수를 출력한다.
-		cout << dice[1] << "\n";
+		if(k == 0)
+		{	
+			for(int i = y+2; i <= col; i++)
+			{
+				Map[x][i] = Temp[x][i-1];
+			}
+			
+			for(int i = x-1; i >= 1; i--)
+			{
+				Map[i][col] = Temp[i+1][col];
+			}
+			
+			for(int i = col-1; i >= 1; i--)
+			{
+				Map[1][i] = Temp[1][i+1];
+			}
+			
+			for(int i = 2; i <= x-1; i++)
+			{
+				Map[i][1] = Temp[i-1][1];
+			}	
+		}
+		else if(k == 1)
+		{
+			for(int i = y+2; i <= col; i++)
+			{
+				Map[x][i] = Temp[x][i-1];
+			}
+			
+			for(int i = x+1; i <= row; i++)
+			{
+				Map[i][col] = Temp[i-1][col];
+			}
+			
+			for(int i = col-1; i >= 1; i--)
+			{
+				Map[row][i] = Temp[row][i+1];
+			}
+			
+			for(int i = row-1; i >= x+1; i--)
+			{
+				Map[i][1] = Temp[i+1][1];
+			}
+		}
+	}
+}
+
+void print()
+{
+	cout << "\n";
+	for(int i = 1; i <= row; i++)
+	{
+		for(int j = 1; j <= col; j++)
+		{
+			cout << Map[i][j] << " ";
+		}
+		cout << "\n";
+	}
+}
+
+int cal()
+{
+	int mise_cnt = 0;
+	
+	for(int i = 1; i <= row; i++)
+	{
+		for(int j = 1; j <= col; j++)
+		{
+			if(Map[i][j] != -1)
+			{
+				mise_cnt += Map[i][j];
+			}
+		}
+	}
+	
+	return mise_cnt;
+}
+
+void solve()
+{
+	int time = 0;
+	
+	while(1)
+	{
+		mise_spread();
+		clean_spread();
 		
-		x = nx;
-		y = ny;
+		time++;
+		
+		if(time == T)
+		{
+			cout << cal();
+			break;
+		}	
 	}
 } 
  
@@ -106,17 +208,22 @@ int main(void)
 {
 //	freopen("B17144_input.txt", "r", stdin);
 	
-	cin >> row >> col >> startX >> startY >> N;
+	cin >> row >> col >> T;
 	
-	for(int i = 0; i < row; i++)
+	for(int i = 1; i <= row; i++)
 	{
-		for(int j = 0; j < col; j++)
+		for(int j = 1; j <= col; j++)
 		{
-			cin >> Map[i][j];
+			cin >> Map[i][j];		
+			
+			if(Map[i][j] == -1)
+			{
+				clean.push_back({i, j});
+			}
 		}
 	}
-
-	solve(startX, startY);
+	
+	solve();
 	
 	return 0;
 }
