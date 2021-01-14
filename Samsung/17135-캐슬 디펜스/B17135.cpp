@@ -182,6 +182,7 @@ int main(void)
 		for(int j = 0; j < col; j++)
 		{
 			cin >> Map[i][j];
+			
 			tempMap[i][j] = Map[i][j];
 		}
 	}
