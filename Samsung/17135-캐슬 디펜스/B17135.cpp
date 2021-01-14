@@ -87,7 +87,7 @@ void move()
 
 void print()
 {
-	cout << "--move Map--\n";
+	cout << "\n--move Map--\n";
 	for(int i = 0; i < row; i++)
 	{
 		for(int j = 0; j < col; j++)
@@ -182,7 +182,6 @@ int main(void)
 		for(int j = 0; j < col; j++)
 		{
 			cin >> Map[i][j];
-			
 			tempMap[i][j] = Map[i][j];
 		}
 	}
