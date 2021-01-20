@@ -17,9 +17,9 @@ typedef struct node
 	int cnt;
 }node;
 
-int row, col;
+int row, col, K;
 int Map[1010][1010];
-int visited[1010][1010][2];
+int visited[1010][1010][15];
 int Min = 99999999;
 
 int dx[4] = {0, 0, 1, -1};
@@ -70,7 +70,7 @@ void BFS()
 				q.push({nx, ny, cnt});
 				visited[nx][ny][cnt] = visited[x][y][cnt] + 1;
 			}
-			else if(Map[nx][ny] == 1 && visited[nx][ny][cnt] == 0 && cnt == 0)
+			else if(Map[nx][ny] == 1 && visited[nx][ny][cnt] == 0 && cnt+1 <= K)
 			{
 				q.push({nx, ny, cnt+1});
 				visited[nx][ny][cnt+1] = visited[x][y][cnt] + 1;
@@ -81,9 +81,9 @@ void BFS()
 
 int main(void)
 {
-//	freopen("B2206_input.txt", "r", stdin);
+//	freopen("B14442_input.txt", "r", stdin);
 	
-	cin >> row >> col;
+	cin >> row >> col >> K;
 	
 	for(int i = 1; i <= row; i++)
 	{
