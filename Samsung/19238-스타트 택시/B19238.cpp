@@ -22,8 +22,7 @@ typedef struct node
 int N;
 int M, fuel;
 int Map[30][30];
-deque<node> customer;
-int customer_check[500];
+vector<node> customer;
 int bX, bY;
 int cnt;
 
@@ -65,16 +64,9 @@ vector<node> check_min_distance()
 {
 	queue<pair<int, int>> q;
 	int visited[30][30] = {0};
-	int Min = 99999999;
-	vector<node> list;
 	
 	q.push({bX, bY});
 	visited[bX][bY] = 1;
-	
-	if(Map[bX][bY] >= 0)
-	{
-		Min = min(Min, visited[bX][bY]);
-	}
 	
 	while(!q.empty())
 	{
@@ -92,28 +84,39 @@ vector<node> check_min_distance()
 				continue;
 			}
 			
-			if(Map[nx][ny] == -1 && visited[nx][ny] == 0)
+			if(Map[nx][ny] >= -1 && visited[nx][ny] == 0)
 			{
 				q.push({nx, ny});
 				visited[nx][ny] = visited[x][y] + 1;
 			}
-			else if(Map[nx][ny] >= 0 && visited[nx][ny] == 0)
-			{
-				visited[nx][ny] = visited[x][y] + 1;
-				Min = min(Min, visited[nx][ny]);
-			}
 		}
 	}
 	
+	vector<node> list;
+	int Min = 99999999;	
+	
 	for(int i = 0; i < customer.size(); i++)
 	{
-		if(customer_check[i] != 0)
+		int x = customer[i].startX;
+		int y = customer[i].startY;
+		
+		if(Map[x][y] < 0 || visited[x][y] == 0)
 		{
 			continue;
 		}
 		
+		Min = min(Min, visited[x][y]);
+	}
+	
+	for(int i = 0; i < customer.size(); i++)
+	{
 		int x = customer[i].startX;
 		int y = customer[i].startY;
+		
+		if(Map[x][y] < 0 || visited[x][y] == 0)
+		{
+			continue;
+		}
 		
 		if(Min == visited[x][y])
 		{
@@ -123,11 +126,6 @@ vector<node> check_min_distance()
 	}
 	
 	sort(list.begin(), list.end(), cmp);
-	
-//	for(int i = 0; i < list.size(); i++)
-//	{
-//		cout << list[i].startX << "  " << list[i].startY << "  " << list[i].d << "\n";
-//	}
 	
 	return list;
 }
@@ -176,8 +174,6 @@ void solve()
 {
 	while(1)
 	{
-//		cout << "-----------------------------\n";
-		
 		vector<node> list = check_min_distance();
 		
 		if(list.size() == 0)
@@ -192,10 +188,6 @@ void solve()
 		int arriveY = list[0].arriveY;
 		int d = list[0].d;
 		
-		
-//		cout << "taxi : " << bX << " " << bY << "\n";
-//		cout << "customer : " << startX << " " << startY << "  /  " << arriveX << " " << arriveY << "\n";
-		
 		fuel -= d;
 		
 		if(fuel < 0)
@@ -203,14 +195,18 @@ void solve()
 			cout << "-1";
 			break;
 		}
-		
-//		cout << "fuel1 : " << fuel << "\n";
-		
+			
 		int val = check_arrive_distance(startX, startY, arriveX, arriveY);
 		
-//		cout << "val : " << val << "\n";
-		
 		if(val == 0)
+		{
+			cout << "-1";
+			break;
+		}
+		
+		fuel -= val;
+		
+		if(fuel < 0)
 		{
 			cout << "-1";
 			break;
@@ -220,10 +216,7 @@ void solve()
 			cnt++;
 		}
 		
-		fuel += val;
-		
-//		cout << "fuel2 : " << fuel << "\n";
-//		cout << "cnt " << cnt << "\n";
+		fuel += 2 * val;
 		
 		if(cnt == M)
 		{
@@ -231,7 +224,6 @@ void solve()
 			break;
 		}
 		
-		customer_check[Map[startX][startY]] = 1;
 		Map[startX][startY] = -1;
 		
 		bX = arriveX;
