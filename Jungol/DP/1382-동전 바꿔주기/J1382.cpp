@@ -8,58 +8,59 @@
 #include <algorithm>
 using namespace std;
 
-int N, W;
+int T, K;
 vector<pair<int, int>> coin;
 int dp[10010][110];
 
-int solve(int sum)
+int solve(int sum, int idx)
 {
-	if(sum == W)
+	if(sum == T)
+	{
+		return 1;
+	}
+	else if(sum > T)
 	{
 		return 0;
 	}
-	else if(sum > W)
+	
+	if(dp[sum][idx] != -1)
 	{
-		return 987654321;
+		return dp[sum][idx];
+	}
+	dp[sum][idx] = 0;
+	
+	for(int i = idx; i < coin.size(); i++)
+	{
+		if(coin[i].second >= 1)
+		{
+			coin[i].second--;
+			dp[sum][idx] += solve(sum + coin[i].first, i);	
+			coin[i].second++;
+		}
 	}
 	
-	if(dp[sum] != 0)
-	{
-		return dp[sum];
-	}
-	dp[sum] = 987654321;
-	
-	for(int i = 1; i <= N; i++)
-	{
-		dp[sum] = min(dp[sum], solve(sum + coin[i]) + 1);
-	}
-	
-	return dp[sum];
+	return dp[sum][idx];
 }
 
 int main(void)
 {
-//	freopen("J2000_input.txt", "r", stdin);
+//	freopen("J1382_input.txt", "r", stdin);
 	
-	cin >> N;
+	memset(dp, -1, sizeof(dp));
 	
-	for(int i = 1; i <= N; i++)
+	cin >> T >> K;
+	
+	for(int i = 1; i <= K; i++)
 	{
-		cin >> coin[i];	
+		int val, n;
+		cin >> val >> n;
+		
+		coin.push_back({val, n});
 	}
 	
-	cin >> W;
+	sort(coin.begin(), coin.end());
 	
-	int val = solve(0);
-	
-	if(val == 987654321)
-	{
-		cout << "impossible";
-	}
-	else
-	{
-		cout << val;
-	}
+	cout << solve(0, 0);
 	
 	return 0;
 }
