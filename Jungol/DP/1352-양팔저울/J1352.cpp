@@ -2,7 +2,6 @@
 #include <iostream>
 #include <queue>
 #include <map>
-#include <math.h>
 #include <string>
 #include <string.h>
 #include <vector>
@@ -11,34 +10,35 @@ using namespace std;
 
 int N, T;
 int choo[40];
-int check[15010][40];
+int dp[15010][40];
 int goal;
 
-void solve(int result, int idx)
-{ 
+void solve(int sum, int idx)
+{
+	// idx >= N (X), idx > N (O) -> Áß¿ä 
 	if(idx > N)
 	{
 		return;
 	}
-	else if(check[result][idx] == 1)
+	
+	if(dp[sum][idx] != 0)
 	{
 		return;
 	}
+	dp[sum][idx] = 1;
 	
-	check[result][idx] = 1;
-	
-	solve(result + choo[idx], idx+1);
-	solve(abs(result - choo[idx]), idx+1);
-	solve(result, idx+1);
+	solve(sum + choo[idx], idx+1);
+	solve(abs(sum - choo[idx]), idx+1);
+	solve(sum, idx+1);
 }
 
 int main(void)
 {
-//	freopen("B2629_input.txt", "r", stdin);
-	
+//	freopen("J1352_input.txt", "r", stdin);
+
 	cin >> N;
 	
-	for(int i = 1; i <= N; i++)
+	for(int i = 0; i < N; i++)
 	{
 		cin >> choo[i];
 	}
@@ -57,7 +57,7 @@ int main(void)
 			continue;
 		}
 		
-		if(check[goal][N] == 1)
+		if(dp[goal][N] == 1)
 		{
 			cout << "Y ";
 		}

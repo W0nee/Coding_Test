@@ -18,7 +18,7 @@ int solve(int sum, int idx)
 	{
 		return 1;
 	}
-	else if(sum > T)
+	else if(sum > T || idx >= K)
 	{
 		return 0;
 	}
@@ -29,14 +29,9 @@ int solve(int sum, int idx)
 	}
 	dp[sum][idx] = 0;
 	
-	for(int i = idx; i < coin.size(); i++)
+	for(int i = 0; i <= coin[idx].second; i++)
 	{
-		if(coin[i].second >= 1)
-		{
-			coin[i].second--;
-			dp[sum][idx] += solve(sum + coin[i].first, i);	
-			coin[i].second++;
-		}
+		dp[sum][idx] += solve(sum + coin[idx].first * i, idx+1);	
 	}
 	
 	return dp[sum][idx];
@@ -58,7 +53,7 @@ int main(void)
 		coin.push_back({val, n});
 	}
 	
-	sort(coin.begin(), coin.end());
+//	sort(coin.begin(), coin.end());
 	
 	cout << solve(0, 0);
 	

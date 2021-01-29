@@ -10,9 +10,10 @@
 using namespace std;
 
 int N, T;
-int choo[40];
-int check[15010][40];
-int goal;
+int choo[20];
+int check[2600010][20];
+int cnt;
+int S;
 
 void solve(int result, int idx)
 { 
@@ -20,11 +21,11 @@ void solve(int result, int idx)
 	{
 		return;
 	}
-	else if(check[result][idx] == 1)
+	
+	if(check[result][idx] != 0)
 	{
 		return;
 	}
-	
 	check[result][idx] = 1;
 	
 	solve(result + choo[idx], idx+1);
@@ -34,38 +35,28 @@ void solve(int result, int idx)
 
 int main(void)
 {
-//	freopen("B2629_input.txt", "r", stdin);
+//	freopen("B17610_input.txt", "r", stdin);
 	
 	cin >> N;
 	
-	for(int i = 1; i <= N; i++)
+	for(int i = 0; i < N; i++)
 	{
 		cin >> choo[i];
+		
+		S += choo[i];
 	}
 	
 	solve(0, 0);
 	
-	cin >> T;
-	
-	while(T--)
+	for(int i = 1; i <= S; i++)
 	{
-		cin >> goal;
-		
-		if(goal > 15000)
+		if(check[i][N] == 0)
 		{
-			cout << "N ";
-			continue;
-		}
-		
-		if(check[goal][N] == 1)
-		{
-			cout << "Y ";
-		}
-		else
-		{
-			cout << "N ";
+			cnt++;
 		}
 	}
+	
+	cout << cnt;
 	
 	return 0;
 }
