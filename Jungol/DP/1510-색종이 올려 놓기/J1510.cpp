@@ -13,34 +13,11 @@ vector<pair<int, int>> paper;
 int dp[1010];
 int Max;
 
-//int dp[1010][1010];
-//int solve(int garo, int sero)
-//{
-//	if(idx == N)
-//	{
-//		return stair[idx];
-//	}
-//	else if(idx > N)
-//	{
-//		return -987654321;
-//	}
-//	
-//	if(dp[garo][sero] != -1)
-//	{
-//		return dp[garo][sero];
-//	}
-//	dp[garo][sero] = 0;
-//	
-//	for(int i)
-//	
-//	return dp[garo][sero];
-//}
-
 int solve(int idx)
 {
 	if(idx == paper.size()-1)
 	{
-		return 1;
+		return 0;
 	}
 	
 	if(dp[idx] != -1)
@@ -85,17 +62,12 @@ int main(void)
 	
 	sort(paper.begin(), paper.end(), greater<pair<int, int>>());
 	
-//	for(int i = 0; i < paper.size(); i++)
-//	{
-//		cout << paper[i].first << " " << paper[i].second << "\n";
-//	}
-	
 	for(int i = 0; i < paper.size(); i++)
 	{
-		Max = max(Max, solve(i));
+		Max = max(Max, solve(i) + 1);
 	}
 	
-	cout << Max;
+	cout << Max << "\n";
 	
 	return 0;
 }

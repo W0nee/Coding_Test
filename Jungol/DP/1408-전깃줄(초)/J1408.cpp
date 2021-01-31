@@ -9,13 +9,13 @@
 using namespace std;
 
 int N;
-vector<int> child;
-int dp[210];
+int dp[110];
+vector<pair<int, int>> line;
 int Max;
 
 int solve(int idx)
 {
-	if(idx == N)
+	if(idx == line.size()-1)
 	{
 		return 0;
 	}
@@ -26,11 +26,11 @@ int solve(int idx)
 	}
 	dp[idx] = 0;
 	
-	for(int i = idx+1; i < child.size(); i++)
+	for(int i = idx+1; i < line.size(); i++)
 	{
-		if(child[idx] < child[i])
+		if(line[idx].first < line[i].first && line[idx].second < line[i].second)
 		{
-			dp[idx] = max(dp[idx], solve(i) + 1);
+			dp[idx] = max(dp[idx], solve(i) + 1);	
 		}
 	}
 	
@@ -39,21 +39,23 @@ int solve(int idx)
 
 int main(void)
 {
-//	freopen("J1871_input.txt", "r", stdin);
+//	freopen("J1408_input.txt", "r", stdin);
 
 	memset(dp, -1, sizeof(dp));
-
+	
 	cin >> N;
 	
 	for(int i = 1; i <= N; i++)
 	{
-		int num;
-		cin >> num;
+		int a, b;
+		cin >> a >> b;
 		
-		child.push_back(num);
+		line.push_back({a, b});
 	}
 	
-	for(int i = 0; i < child.size(); i++)
+	sort(line.begin(), line.end());
+	
+	for(int i = 0; i < line.size(); i++)
 	{
 		Max = max(Max, solve(i) + 1);
 	}
