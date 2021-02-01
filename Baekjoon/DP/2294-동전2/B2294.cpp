@@ -12,9 +12,9 @@ using namespace std;
 
 int N, K;
 int coin[110];
-int dp[10010];
+int dp[10010][110];
 
-int solve(int sum)
+int solve(int sum, int idx)
 {
 	if(sum == K)
 	{
@@ -25,18 +25,18 @@ int solve(int sum)
 		return INF;
 	}
 	
-	if(dp[sum] != 0)
+	if(dp[sum][idx] != 0)
 	{
-		return dp[sum];
+		return dp[sum][idx];
 	}
-	dp[sum] = INF;
+	dp[sum][idx] = INF;
 	
-	for(int i = 1; i <= N; i++)
+	for(int i = idx; i <= N; i++)
 	{
-		dp[sum] = min(dp[sum], solve(sum + coin[i]) + 1);
+		dp[sum][idx] = min(dp[sum][idx], solve(sum + coin[i], i) + 1);
 	}
-		
-	return dp[sum];
+	
+	return dp[sum][idx];
 }
 
 int main(void)
@@ -48,17 +48,19 @@ int main(void)
 	for(int i = 1; i <= N; i++)
 	{
 		cin >> coin[i];
-	}
+	}                 
 	
-	solve(0);
+//	sort(coin+1, coin+N+1);                                                                 
 	
-	if(dp[0] == INF)
+	int val = solve(0, 1);
+
+	if(val == INF)
 	{
-		cout << -1;
+		cout << "-1";
 	}
 	else
 	{
-		cout << dp[0];
+		cout << val;
 	}
 	
 	return 0;

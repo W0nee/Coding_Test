@@ -18,7 +18,7 @@ int solve(int sum, int idx)
 	{
 		return 0;
 	}
-	else if(idx > 2)
+	else if(sum > K)
 	{
 		return 999999999;
 	}
@@ -29,12 +29,10 @@ int solve(int sum, int idx)
 	}
 	dp[sum][idx] = 999999999;
 	
-	if(sum + sugar[idx] <= K)
+	for(int i = idx; i <= 2; i++)
 	{
-		dp[sum][idx] = 1 + solve(sum + sugar[idx], idx);
+		dp[sum][idx] = min(dp[sum][idx], solve(sum + sugar[i], i) + 1);
 	}
-	
-	dp[sum][idx] = min(dp[sum][idx], solve(sum, idx+1));
 	
 	return dp[sum][idx];
 }

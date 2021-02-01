@@ -12,7 +12,7 @@ using namespace std;
 
 int N, K;
 int coin[110];
-int dp[10010][110];
+int dp[10010];
 
 int solve(int sum, int idx)
 {
@@ -20,33 +20,23 @@ int solve(int sum, int idx)
 	{
 		return 0;
 	}
-//	else if(sum > K)
-//	{
-//		return INF;
-//	}
-	
-	if(dp[sum][idx] != 0)
+	else if(sum > K)
 	{
-		return dp[sum][idx];
-	}
-	dp[sum][idx] = INF;
-	
-//	for(int i = idx; i <= N; i++)
-//	{
-//		dp[sum][idx] = min(dp[sum][idx], solve(sum + coin[i], i) + 1);
-//	}
-	
-	if(sum + coin[idx] <= K)
-	{
-		dp[sum][idx] = min(dp[sum][idx], solve(sum + coin[idx], idx) + 1);
+		return INF;
 	}
 	
-	if(idx+1 <= N)
+	if(dp[sum] != 0)
 	{
-		dp[sum][idx] = min(dp[sum][idx], solve(sum, idx+1));
+		return dp[sum];
+	}
+	dp[sum] = INF;
+	
+	for(int i = 1; i <= N; i++)
+	{
+		dp[sum] = min(dp[sum], solve(sum + coin[i], i) + 1);
 	}
 	
-	return dp[sum][idx];
+	return dp[sum];
 }
 
 int main(void)
@@ -60,18 +50,15 @@ int main(void)
 		cin >> coin[i];
 	}
 	
-	// 오름차순 정렬이 중요
-//	sort(coin+1, coin+N+1);                                                                                     
-	
-	solve(0, 1);
+	int val = solve(0, 1);
 
-	if(dp[0][1] == INF)
+	if(val == INF)
 	{
-		cout << -1;
+		cout << "-1";
 	}
 	else
 	{
-		cout << dp[0][1];
+		cout << val;
 	}
 	
 	return 0;

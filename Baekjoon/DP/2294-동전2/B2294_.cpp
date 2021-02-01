@@ -53,15 +53,15 @@ int main(void)
 	// 오름차순 정렬이 중요 -> 모든 수를 써서 최소를 만들어야되는데 정렬을 안하면 그것이 안됨 
 	sort(coin+1, coin+N+1);                                                                                     
 	
-	solve(0, 1);
+	int val = solve(0, 1);
 
-	if(dp[0] == INF)
+	if(val == INF)
 	{
-		cout << -1;
+		cout << "-1";
 	}
 	else
 	{
-		cout << dp[0];
+		cout << val;
 	}
 	
 	return 0;

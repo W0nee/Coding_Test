@@ -8,22 +8,8 @@
 #include <algorithm>
 using namespace std;
 
-typedef struct node
-{
-	int from;
-	int to;
-	int n;
-}node;
-
-int N;
-int dp[10010];
-int Switch[10010];
-int Light[10010];
-int arr[10010];
-vector<node> list;
-vector<int> order;
-int Max;
-int MaxNum;
+string a, b;
+int dp[1010][1010];
 
 bool cmp(node a, node b)
 {
