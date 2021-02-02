@@ -15,13 +15,13 @@ int dp[400][400];
 int solve(int from, int cnt)
 {
 	// N에 도착시 종료 
-	if(from == N)
+	if(from == N && cnt <= M)
 	{
 		return 0;
 	}
 	
 	// M개의 도시를 전부돌았지만 최종 도착지가 N이 아니면 매우 작은 값 리턴  
-	if(cnt >= M)
+	if(from != N && cnt >= M)
 	{
 		return -987654321;	
 	}
@@ -45,7 +45,7 @@ int solve(int from, int cnt)
 
 int main(void)
 {
-//	freopen("B2096_input.txt", "r", stdin);
+//	freopen("B2157_input.txt", "r", stdin);
 	
 	cin >> N >> M >> K;
 	

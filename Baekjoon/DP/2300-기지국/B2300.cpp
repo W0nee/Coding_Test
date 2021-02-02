@@ -19,13 +19,13 @@ int solve(int idx)
 		return 0;
 	}
 	
-	if(dp[idx] != 987654321)
+	if(dp[idx] != 0)
 	{
 		return dp[idx];
 	}
+	dp[idx] = 99999999;
 	
 	int Max = 0;
-	
 	for(int i = idx; i < N; i++)
 	{
 		Max = max({Max, build[i].first - build[idx].first, 2 * build[i].second});
@@ -48,8 +48,6 @@ int main(void)
 		cin >> x >> y;
 		
 		build.push_back({x, abs(y)});
-		
-		dp[i] = 987654321;
 	}
 	
 	sort(build.begin(), build.end());
