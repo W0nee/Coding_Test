@@ -25,7 +25,6 @@ int time;
 
 node shark;
 deque<node> fish;
-map<pair<int, int>, int> eaten;
 
 int dx[4] = {-1, 1, 0, 0};
 int dy[4] = {0, 0, -1, 1};
@@ -120,6 +119,7 @@ void DFS(int x, int y)
 	}
 	
 	vector<node> eat = cal_distance(shark.x, shark.y);
+	
 	sort(eat.begin(), eat.end(), cmp);
 	
 //	cout << "\n----stage---\n";
