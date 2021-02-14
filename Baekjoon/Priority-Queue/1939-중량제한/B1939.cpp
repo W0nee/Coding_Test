@@ -9,14 +9,13 @@
 #include <algorithm>
 using namespace std;
 
-#define ll long long
 #define INF 1111111111
 
 int N, M;
-vector<pair<ll, ll>> graph[20010];
+vector<pair<int, int>> graph[10010];
 int start, arrive;
 
-bool cmp(pair<ll, ll> a, pair<ll, ll> b)
+bool cmp(pair<int, int> a, pair<int, int> b)
 {
 	if(a.second > b.second)
 	{
@@ -28,16 +27,16 @@ bool cmp(pair<ll, ll> a, pair<ll, ll> b)
 
 void BFS()
 {
-	priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, less<pair<ll, ll>>> pq;
-	ll visited[100010] = {0};
+	priority_queue<pair<int, int>, vector<pair<int, int>>, less<pair<int, int>>> pq;
+	int visited[100010] = {0};
 	
 	pq.push({INF, start});
 	visited[start] = INF;
 	
 	while(!pq.empty())
 	{
-		ll now = pq.top().second;
-		ll nowCost = pq.top().first;
+		int now = pq.top().second;
+		int nowCost = pq.top().first;
 		pq.pop();
 		
 		if(now == arrive)
@@ -48,15 +47,15 @@ void BFS()
 		
 		for(int i = 0; i < graph[now].size(); i++)
 		{
-			ll next = graph[now][i].first;
-			ll nextCost = graph[now][i].second;
+			int next = graph[now][i].first;
+			int nextCost = graph[now][i].second;
 			
-			ll Min = min(visited[now], nextCost);
+			int Min = min(visited[now], nextCost);
 			
 			if(visited[next] < Min)
 			{
 				pq.push({nextCost, next});
-				visited[next] = min(visited[now], nextCost);
+				visited[next] = Min;
 			}
 		}
 	}
