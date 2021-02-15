@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <queue>
+#include <deque>
 #include <map>
 #include <string>
 #include <algorithm>
@@ -8,7 +9,9 @@ using namespace std;
 
 int D;
 int N;
-int Min[300010];
+int oven[300010];
+int Min = 987654321;
+int ans;
 
 int main(void)
 {
@@ -17,41 +20,40 @@ int main(void)
 	cin >> D >> N;
 	
 	for(int i = 1; i <= D; i++)
-	{
+	{	
 		int d;
 		cin >> d;
 		
-		if(i == 1)
-		{
-			Min[i] = d;
-		}
-		else
-		{
-			Min[i] = min(Min[i-1], d);	
-		}
+		Min = min(Min, d);
+		
+		oven[i] = Min;
 	}
 	
-	int minIdx = D;
+	int idx = D;
 	for(int i = 1; i <= N; i++)
 	{
-		int d;
-		cin >> d;
+		int pizza;
+		cin >> pizza;
 		
-		while(minIdx >= 1 && Min[minIdx] < d)
+		while(idx >= 1 && oven[idx] < pizza)
 		{
-			minIdx--;
+			idx--;
 		}
-		minIdx--;
+		
+		if(idx <= 0)
+		{
+			cout << "0";
+			return 0;
+		}
+		
+		if(oven[idx] >= pizza)
+		{
+			ans = idx;
+			idx--;
+		}
 	}
 	
-	if(minIdx <= -1)
-	{
-		cout << 0 << endl;
-	}
-	else
-	{
-		cout << minIdx+1 << endl;
-	}
+	cout << ans;
 	
 	return 0;
 }

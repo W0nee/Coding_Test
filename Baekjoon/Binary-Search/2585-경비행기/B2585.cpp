@@ -35,10 +35,10 @@ int BFS(int mid)
 			{
 				return 1;
 			}
-			else if(visited[next] == 0 && graph[now][next] <= mid && k+1 <= K)
+			else if(visited[next] < visited[now] && graph[now][next] <= mid && k+1 <= K)
 			{
 				q.push({next, k+1});
-				visited[next] = 1;
+				visited[next] = visited[now] + 1;
 			}
 		}
 	}

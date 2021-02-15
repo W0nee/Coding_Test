@@ -54,14 +54,16 @@ int main(void)
 		for(int j = cur-1; j >= 0; j--)
 		{
 			h = min(h, depth[j].first);
-			depth[j].second = max(h, depth[j].second);
+//			depth[j].second = max(h, depth[j].second);
+			depth[j].second = h;
 		}
 		
 		h = depth[cur].first;
 		for(int j = cur+1; j < last; j++)
 		{
 			h = min(h, depth[j].first);
-			depth[j].second = max(h, depth[j].second);
+//			depth[j].second = max(h, depth[j].second);
+			depth[j].second = h;
 		}
 	}
 	
