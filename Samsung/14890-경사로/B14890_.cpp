@@ -11,152 +11,79 @@
 using namespace std;
 
 int N, L;
-int Map[110][110];
-int garo[110];
-int sero[110];
+int Map1[110][110];
+int Map2[110][110];
 int ans;
 
-void solve()
+int make_road(int Map[110][110], int x, int y)
+{
+	for(int j = y; j <= y+L-1; j++)
+	{
+		if(Map[x][y] != Map[x][j])
+		{
+			return 0;
+		}
+	}
+	
+	return 1;
+}
+
+void solve(int Map[110][110])
 {
 	for(int i = 1; i <= N; i++)
 	{
-		if(garo[i] == 0)
-		{
-			continue;
-		}
-		
+		bool can_road = true;
 		int val = Map[i][1];
-		bool down = false; // 1
-		bool up = false;   // 2
 		int cnt = 1;
 		
 		for(int j = 2; j <= N; j++)
 		{
-			// down 경사로 
-			if(val > Map[i][j])
-			{
-				// down 경사로를 완료하지 않은 경우
-				if(down)
-				{
-					break;
-				}
-				
-				down = true;
-				cnt = 1;
-				val = Map[i][j];
-			}
-			// up 경사로 
-			else if(val < Map[i][j])
-			{	
-				// down 경사로 차례에 up 경사로가 나온 경우 
-				if(down)
-				{
-					break;
-				}
-						
-				if(cnt < L)
-				{
-					break;
-				}
-				else if(cnt >= L)
-				{
-					cnt = 1;
-					val = Map[i][j];	
-				}
-			}
-			// flat 경사로 
-			else
+			// flat
+			if(val == Map[i][j])
 			{
 				cnt++;
 			}
-			
-			if(down)
+			// up
+			else if(val + 1 == Map[i][j])
 			{
 				if(cnt >= L)
 				{
-					down = false;
-					cnt = 0;
+					cnt = 1;
+					val = Map[i][j];
+				}
+				else
+				{
+					can_road = false;
+					break;
 				}
 			}
-			
-			if(j == N && down == false)
+			// down
+			else if(val == Map[i][j] + 1)
 			{
-//				cout << "@ " << down << endl;
-//				cout << i << endl;
-				ans++;
-			} 
+				if(make_road(Map, i, j) == 1)
+				{
+					j = j + L - 1;
+					cnt = 0;
+					val = Map[i][j];
+				}
+				else
+				{
+					can_road = false;
+					break;
+				}
+			}
+			else if(abs(val - Map[i][j]) >= 2)
+			{
+				can_road = false;
+				break;
+			}
+		}
+		
+		if(can_road)
+		{
+			ans++;
 		}
 	}
-	
-//	cout << "--------\n";
-	
-	for(int j = 1; j <= N; j++)
-	{
-		if(sero[j] == 0)
-		{
-			continue;
-		}
-		
-		int val = Map[1][j];
-		bool down = false; 
-		int cnt = 1;
-		
-		for(int i = 2; i <= N; i++)
-		{
-			// down 경사로 
-			if(val > Map[i][j])
-			{
-				// down 경사로를 완료하지 않은 경우
-				if(down)
-				{
-					break;
-				}
-				 
-				down = true;
-				cnt = 1;
-				val = Map[i][j];
-			}
-			// up 경사로 
-			else if(val < Map[i][j])
-			{	
-				// down 경사로 차례에 up 경사로가 나온 경우 
-				if(down)
-				{
-					break;
-				}
-						
-				if(cnt < L)
-				{
-					break;
-				}
-				else if(cnt >= L)
-				{
-					cnt = 1;
-					val = Map[i][j];	
-				}
-			}
-			// flat 경사로 
-			else
-			{
-				cnt++;
-			}
-			
-			if(down)
-			{
-				if(cnt >= L)
-				{
-					down = false;
-					cnt = 0;
-				}
-			}
-			
-			if(i == N && down == false)
-			{
-//				cout << j << endl;
-				ans++;
-			} 
-		}
-	}	
 }
 
 int main(void)
@@ -169,41 +96,14 @@ int main(void)
 	{
 		for(int j = 1; j <= N; j++)
 		{
-			cin >> Map[i][j];
+			cin >> Map1[i][j];
+			
+			Map2[j][i] = Map1[i][j];
 		}
 	}
-	
-	for(int i = 1; i <= N; i++)
-	{
-		int diff = 0;
-		
-		for(int j = 1; j < N; j++)
-		{
-			diff = max(diff, abs(Map[i][j]-Map[i][j+1]));
-		}
-		
-		if(diff <= 1)
-		{
-			garo[i] = 1;
-		}
-	}
-	
-	for(int j = 1; j <= N; j++)
-	{
-		int diff = 0;
-		
-		for(int i = 1; i < N; i++)
-		{
-			diff = max(diff, abs(Map[i][j]-Map[i+1][j]));
-		}
-		
-		if(diff <= 1)
-		{
-			sero[j] = 1;
-		}
-	}
-	
-	solve();
+
+	solve(Map1);
+	solve(Map2);
 	
 	cout << ans;
 	

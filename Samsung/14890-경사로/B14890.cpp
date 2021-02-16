@@ -81,14 +81,11 @@ void solve()
 			
 			if(j == N && down == false)
 			{
-//				cout << "@ " << down << endl;
-//				cout << i << endl;
+				cout << i << endl;
 				ans++;
 			} 
 		}
 	}
-	
-//	cout << "--------\n";
 	
 	for(int j = 1; j <= N; j++)
 	{
@@ -152,7 +149,7 @@ void solve()
 			
 			if(i == N && down == false)
 			{
-//				cout << j << endl;
+				cout << j << endl;
 				ans++;
 			} 
 		}

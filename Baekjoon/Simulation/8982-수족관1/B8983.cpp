@@ -19,8 +19,9 @@ typedef struct node
 
 int N, K;
 pair<int, int> pos[5010];
-node hole[2510];
 pair<int, int> value[40010];
+node hole[2510];
+int ans;
 
 bool cmp(node a, node b)
 {
@@ -63,40 +64,35 @@ int main(void)
 		cin >> hole[i].x1 >> hole[i].y1 >> hole[i].x2 >> hole[i].y2;
 	}
 	
-	sort(hole+1, hole+N+1, cmp);
+	sort(hole+1, hole+K+1, cmp);
 	
 	for(int i = 1; i <= K; i++)
 	{
-		int x1 = hole[i].x1;
-		int y1 = hole[i].y1;
-		int x2 = hole[i].x2;
-		int y2 = hole[i].y2;
-		int minH = y1;
+		int x = hole[i].x1;
+		int y = hole[i].y1;
+		int h = y;
 		
-		// ¿ÞÂÊ 
-		for(int j = x1; j >= 0; j--)
+		for(int j = x; j >= 0; j--)
 		{
-			minH = min(minH, value[j].first);
-			value[j].second = max(minH, value[j].second);
+			h = min(h, value[j].first);
+			value[j].second = max(h, value[j].second);
 		}
 		
-		minH = y1;
+		h = y;
 		
-		// ¿À¸¥ÂÊ
-		for(int j = x2; j < pos[N].first; j++)
+		for(int j = x+1; j < pos[N].first; j++)
 		{
-			minH = min(minH, value[j].first);
-			value[j].second = max(minH, value[j].second);
-		} 
+			h = min(h, value[j].first);
+			value[j].second = max(h, value[j].second);
+		}
 	}
 	
-	int result = 0;
 	for(int i = 0; i < pos[N].first; i++)
 	{
-		result += value[i].first - value[i].second;
+		ans += value[i].first - value[i].second;
 	}
 	
-	cout << result;
-	
+	cout << ans;
+
 	return 0;
 }

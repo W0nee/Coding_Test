@@ -182,7 +182,6 @@ int move(int dir)
 	
 	if(redHole == 1 && blueHole == 0)
 	{
-		
 		return 1;
 	}
 	else if(redHole == 0 && blueHole == 0)
@@ -224,32 +223,24 @@ void DFS(int ans)
 		return;
 	}
 	
+	char temp_Map[15][15];
+	int temp_redX = redX;
+	int temp_redY = redY;
+	int temp_blueX = blueX;
+	int temp_blueY = blueY;
+	
+	copy(temp_Map);
+		
 	for(int i = 0; i < 4; i++)
 	{
-		char temp_Map[15][15];
-		int temp_redX = redX;
-		int temp_redY = redY;
-		int temp_blueX = blueX;
-		int temp_blueY = blueY;
-		copy(temp_Map);
-		
 		int val = move(i);
-		
-//		cout << "\n" << i << " " << ans << endl;
-//		for(int i = 1; i <= row; i++)
-//		{
-//			for(int j = 1; j <= col; j++)
-//			{
-//				cout << Map[i][j] << " ";
-//			}
-//			cout << "\n";
-//		}
 		
 		if(val == 1)
 		{
 			Min = min(Min, ans+1);
 			
 			paste(temp_Map);
+			
 			redX = temp_redX;
 			redY = temp_redY;
 			blueX = temp_blueX;
@@ -262,6 +253,7 @@ void DFS(int ans)
 			DFS(ans+1);
 			
 			paste(temp_Map);
+			
 			redX = temp_redX;
 			redY = temp_redY;
 			blueX = temp_blueX;
@@ -270,6 +262,7 @@ void DFS(int ans)
 		else if(val == -1)
 		{
 			paste(temp_Map);
+			
 			redX = temp_redX;
 			redY = temp_redY;
 			blueX = temp_blueX;
