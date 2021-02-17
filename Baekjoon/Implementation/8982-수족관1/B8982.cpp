@@ -70,9 +70,11 @@ int main(void)
 	{
 		int x = hole[i].x1;
 		int y = hole[i].y1;
-		int h = y;
 		
-		for(int j = x; j >= 0; j--)
+		int h = y;
+		value[x].second = h;
+		
+		for(int j = x-1; j >= 0; j--)
 		{
 			h = min(h, value[j].first);
 			value[j].second = max(h, value[j].second);
@@ -89,7 +91,7 @@ int main(void)
 	
 	for(int i = 0; i < pos[N].first; i++)
 	{
-		ans += value[i].first - value[i].second;
+		ans += (value[i].first - value[i].second);
 	}
 	
 	cout << ans;

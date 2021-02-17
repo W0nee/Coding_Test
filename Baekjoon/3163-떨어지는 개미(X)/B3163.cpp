@@ -9,8 +9,8 @@ using namespace std;
 
 int T;
 int N, L, K;
-int p[100010];
-int a[100010];
+pair<int, int> ant[100010];
+int order[100010];
 
 int main(void)
 {
@@ -22,30 +22,25 @@ int main(void)
 	{
 		cin >> N >> L >> K;	
 		
-		vector<int> left;
-		vector<int> right;
-		
-		for(int i = 0; i < N; i++)
+		for(int i = 1; i <= N; i++)
 		{
-			cin >> p[i] >> a[i];
+			int d, n;
+			cin >> d >> n;
 			
-			if(a[i] > 0)
-			{
-				right.push_back(L-p[i]);
-			}
-			else
-			{
-				left.push_back(p[i]);
-			}
+			order[i] = n;
+			
+			ant[i].first = L - d + 1;
+			ant[i].second = n;
 		}
 		
-		vector<int> v = left;
-		for(int i = 0; i < right.size(); i++)
+//		sort(ant+1, ant+N+1);
+		
+//		cout << ant[K].second << endl;
+		while(K--)
 		{
-			v.push_back(right[i]);
+			if(a
 		}
-		
-		
+
 	}
 	
 	
