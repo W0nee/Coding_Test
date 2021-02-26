@@ -71,6 +71,7 @@ int check_right()
 int cal()
 {
 	stack<string> st;
+	int result = 0;
 	
 	for(int i = 0; i < s.size(); i++)
 	{
@@ -134,7 +135,6 @@ int cal()
 		}
 	}
 	
-	int result = 0;
 	while(!st.empty())
 	{
 		result += stoi(st.top());
