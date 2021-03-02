@@ -8,46 +8,45 @@
 #include <algorithm>
 using namespace std;
 
-int N, S;
-int num[100010];
-int Min = 999999999;
+typedef long long ll;
+
+int N, K;
+ll dp[210][210];
+
+ll solve(int sum, int cnt)
+{
+	if(sum == N && cnt == K)
+	{
+		return 1;
+	}	
+	else if(sum > N || cnt == K)
+	{
+		return 0;
+	}
+	
+	if(dp[sum][cnt] != -1)
+	{
+		return dp[sum][cnt];
+	}
+	dp[sum][cnt] = 0;
+	
+	for(int i = 0; i <= N; i++)
+	{
+		dp[sum][cnt] += solve(sum + i, cnt+1) % 1000000000;	
+	}
+	
+	return dp[sum][cnt] % 1000000000;	
+}
 
 int main(void)
 {
-//	freopen("B1806_input.txt", "r", stdin);
+//	freopen("B2225_input.txt", "r", stdin);
 	
-	cin >> N >> S;
+	cin >> N >> K;
 	
-	for(int i = 1; i <= N; i++)
-	{
-		cin >> num[i];
-	}
+	memset(dp, -1, sizeof(dp));
 	
-	int left = 1;
-	int right = 1;
-	int sum = num[1];
-	
-	while(left <= right && right <= N)
-	{
-		if(sum < S)
-		{
-			sum += num[++right];
-		}
-		else
-		{
-			Min = min(Min, right-left+1);
-			sum -= num[left++];
-		}
-	}
-	
-	if(Min == 999999999)
-	{
-		cout << "0";
-	}
-	else
-	{
-		cout << Min;
-	}
+	cout << solve(0, 0);
 	
 	return 0;
 }

@@ -8,11 +8,9 @@
 #include <algorithm>
 using namespace std;
 
-#define INF 999999999
-
 int N, K;
-int coin[110];
-int dp[10010];
+int dp[10010][110];
+vector<int> coin;
 
 int solve(int sum, int idx)
 {
@@ -20,23 +18,20 @@ int solve(int sum, int idx)
 	{
 		return 0;
 	}
-	else if(sum > K)
+	else if(sum > K || idx == coin.size())
 	{
-		return INF;
+		return 987654321;
 	}
 	
-	if(dp[sum] != 0)
+	if(dp[sum][idx] != 0)
 	{
-		return dp[sum];
+		return dp[sum][idx];
 	}
-	dp[sum] = INF;
+	dp[sum][idx] = 987654321;
 	
-	for(int i = idx; i <= N; i++)
-	{
-		dp[sum] = min(dp[sum], solve(sum + coin[i], i) + 1);
-	}
+	dp[sum][idx] = min({dp[sum][idx], solve(sum, idx+1), solve(sum + coin[idx], idx) + 1});
 	
-	return dp[sum];
+	return dp[sum][idx];
 }
 
 int main(void)
@@ -45,17 +40,22 @@ int main(void)
 	
 	cin >> N >> K;
 	
+	map<int, int> check;
 	for(int i = 1; i <= N; i++)
 	{
-		cin >> coin[i];
+		int input;
+		cin >> input;
+		
+		if(check[input] == 0)
+		{
+			check[input] = 1;
+			coin.push_back(input);
+		}
 	}
 	
-	// 오름차순 정렬이 중요 -> 모든 수를 써서 최소를 만들어야되는데 정렬을 안하면 그것이 안됨 
-	sort(coin+1, coin+N+1);                                                                                     
+	int val = solve(0, 0);
 	
-	int val = solve(0, 1);
-
-	if(val == INF)
+	if(val == 987654321)
 	{
 		cout << "-1";
 	}

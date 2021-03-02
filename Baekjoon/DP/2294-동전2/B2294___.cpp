@@ -31,7 +31,7 @@ int solve(int sum, int idx)
 	}
 	dp[sum] = INF;
 	
-	for(int i = idx; i <= N; i++)
+	for(int i = 1; i <= N; i++)
 	{
 		dp[sum] = min(dp[sum], solve(sum + coin[i], i) + 1);
 	}
@@ -49,9 +49,6 @@ int main(void)
 	{
 		cin >> coin[i];
 	}
-	
-	// 오름차순 정렬이 중요 -> 모든 수를 써서 최소를 만들어야되는데 정렬을 안하면 그것이 안됨 
-	sort(coin+1, coin+N+1);                                                                                     
 	
 	int val = solve(0, 1);
 
