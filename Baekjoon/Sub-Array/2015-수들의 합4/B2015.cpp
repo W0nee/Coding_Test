@@ -1,32 +1,41 @@
 #include <iostream>
+#include <map>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
-int P, N, H;
-vector<int> customer[110];
+int N, K;
+int psum[200010];
+int num[200010];
+map<int, long long> check;
+long long ans;
 
 int main(void)
 {
-	cin >> P >> N >> H;
+	cin >> N >> K;
 	
-	for(int i = 1; i <= N; i ++)
+	for(int i = 1; i <= N; i++)
 	{
-		int num, hour;
-		cin >> num >> hour;
+		cin >> num[i];
 		
-		customer[num].push_back(hour);
+		psum[i] = psum[i-1] + num[i];
 	}
 	
-	for(int i = 1; i <= P; i++)
+	for(int i = 1; i <= N; i++)
 	{
-		sort(customer[i].begin(), customer[i].end());
-	}
-	
-	for(int i = 1; i <= P; i++)
-	{
+		if(psum[i] == K)
+		{
+			ans++;
+		}
 		
+		int val = psum[i] - K;
+		
+		ans += check[val];
+		
+		check[psum[i]]++;
 	}
 	
+	cout << ans << endl;
 	
 	return 0;
 }
