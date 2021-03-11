@@ -12,8 +12,8 @@
 using namespace std;
 
 int N, M;
-int parent[1000010];
-int check[1000010];
+int parent[100010];
+int airplane[100910];
 int cnt;
 
 int Find(int a)
@@ -30,7 +30,7 @@ int Find(int a)
 
 int main(void)
 {
-//	freopen("B14595_input.txt", "r", stdin);
+//	freopen("B14594_input.txt", "r", stdin);
 	
 	cin >> N >> M;
 	
@@ -41,36 +41,22 @@ int main(void)
 	
 	for(int i = 1; i <= M; i++)
 	{
-		int from, to;
-		cin >> from >> to;
+		cin >> airplane[i];
+	}
+	
+	for(int i = 1; i <= M; i++)
+	{		
+		int idx = Find(airplane[i]);
 		
-		int left = Find(from);
-		int right = Find(to);
-		
-		if(left == right)
+		if(idx == 0)
 		{
-			continue;
+			break;
 		}
-		
-		for(int i = left; i <= right; i++)
+		else
 		{
-//			parent[i] = max(left, right);
-			parent[i] = right;
-		}	
-	}
-	
-	for(int i = 1; i <= N; i++)
-	{
-		Find(i);
-	}
-	
-	for(int i = 1; i <= N; i++)
-	{
-		if(check[parent[i]] == 0)
-		{
-			check[parent[i]] =1;
-			cnt++;
-		}	
+			parent[idx] = idx-1;
+			cnt++;	
+		}
 	}
 	
 	cout << cnt;
