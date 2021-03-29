@@ -9,10 +9,24 @@ using namespace std;
 
 #define INF 987654321
 
-int V, E;
-int start;
-vector<pair<int, int>> graph[20010];
-int d[20010];
+int N, M;
+int start, arrive;
+vector<pair<int, int>> graph[1010];
+int d[1010];
+int track[1010];
+vector<int> list;
+
+void tracking(int x)
+{
+	if(x == start)
+	{
+		list.push_back(x);
+		return;
+	}
+	
+	tracking(track[x]);
+	list.push_back(x);
+}
 
 void dijkstra(int x)
 {
@@ -41,6 +55,8 @@ void dijkstra(int x)
 			{
 				d[next] = d[now] + nextCost;
 				pq.push({d[next], next});
+				
+				track[next] = now;
 			}
 		}
 	}
@@ -48,16 +64,16 @@ void dijkstra(int x)
 
 int main(void)
 {
-//	freopen("B1197_input.txt", "r", stdin);
+//	freopen("B11779_input.txt", "r", stdin);
 	
-	cin >> V >> E >> start;
+	cin >> N >> M;
 	
-	for(int i = 1; i <= V; i++)
+	for(int i = 1; i <= N; i++)
 	{
 		d[i] = INF;
 	}
 	
-	for(int i = 1; i <= E; i++)
+	for(int i = 1; i <= M; i++)
 	{
 		int from, to, cost;
 		cin >> from >> to >> cost;
@@ -65,18 +81,16 @@ int main(void)
 		graph[from].push_back({to, cost});
 	}
 	
-	dijkstra(start);
+	cin >> start >> arrive;
 	
-	for(int i = 1; i <= V; i++)
+	dijkstra(start);
+	tracking(arrive);
+	
+	cout << d[arrive] << "\n";
+	cout << (int)list.size() << "\n";
+	for(int i = 0; i < list.size(); i++)
 	{
-		if(d[i] == INF)
-		{
-			cout << "INF\n";
-		}
-		else
-		{
-			cout << d[i] << "\n";
-		}
+		cout << list[i] << " ";
 	}
 	
 	return 0;
