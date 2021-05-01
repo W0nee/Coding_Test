@@ -16,20 +16,6 @@ vector<int> tree[100010];
 int dp[100010][20];
 int Min = INF;
 
-void makeTree(int before, int now)
-{
-	for(int i = 0; i < graph[now].size(); i++)
-	{
-		int next = graph[now][i];
-		
-		if(before != next)
-		{
-			tree[now].push_back(next);
-			makeTree(now, next);
-		}
-	}
-}
-
 int solve(int before, int now, int color)
 {
 	if(dp[now][color] != 0)
@@ -75,8 +61,6 @@ int main(void)
 		graph[from].push_back(to);
 		graph[to].push_back(from);
 	}
-	
-	makeTree(0, 1);
 	
 	for(int i = 1; i <= 18; i++)
 	{
