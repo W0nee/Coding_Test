@@ -10,9 +10,9 @@ vector<int> graph[1010];
 int indegree[1010];
 int build[1010];
 int time[1010];
-int W;
+int win;
 
-void topology()
+void topologySort()
 {
 	queue<int> q;
 	
@@ -21,7 +21,6 @@ void topology()
 		if(indegree[i] == 0)
 		{
 			q.push(i);
-			build[i] = time[i];
 		}
 	}
 	
@@ -29,14 +28,21 @@ void topology()
 	{
 		int x = q.front();
 		q.pop();
+
+		if(x == win)
+		{
+			return;
+		}
 		
 		for(int i = 0; i < graph[x].size(); i++)
 		{
-			build[graph[x][i]] = max(build[graph[x][i]], build[x] + time[graph[x][i]]);
+			int next = graph[x][i];
+			time[next] = max(time[next], build[x]);
 			
-			if(--indegree[graph[x][i]] == 0)
+			if(--indegree[next] == 0)
 			{
-				q.push(graph[x][i]);
+				q.push(next);
+				build[next] += time[next];
 			}
 		}
 	}
@@ -53,13 +59,16 @@ int main(void)
 		cin >> N >> K;
 		
 		for(int i = 1; i <= N; i++)
-		{
-			W = 0;
-			build[i] = 0;
-			indegree[i] = 0;
+		{				
 			graph[i].clear();
-			
-			cin >> time[i];
+			indegree[i] = 0;
+			build[i] = 0;
+			time[i] = 0;
+		}
+		
+		for(int i = 1; i <= N; i++)
+		{
+			cin >> build[i];
 		}
 		
 		for(int i = 1; i <= K; i++)
@@ -71,11 +80,11 @@ int main(void)
 			graph[from].push_back(to);
 		}
 		
-		cin >> W;
+		cin >> win;
 		
-		topology();
+		topologySort();
 		
-		cout << build[W] << "\n";
+		cout << build[win] << endl;
 	}
 	
 	return 0;
