@@ -17,7 +17,7 @@ void meetCal()
 	{
 		if(inRoom[i] == 1)
 		{
-			meet[i] += (int)room.size()-1;
+			meet[i] += (int)room.size();
 		}
 	}
 }
@@ -52,12 +52,12 @@ int main(void)
 		
 		// 방에서 나가기 
 		inRoom[cur_out] = 0;
-		room.clear();
+		room.pop_back();
 	}
 	
 	for(int i = 1; i <= N; i++)
 	{
-		cout << meet[i] << " ";
+		cout << meet[i]-1 << " ";
 	} 
  	
 	return 0;
