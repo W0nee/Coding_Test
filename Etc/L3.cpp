@@ -11,13 +11,27 @@ vector<int> room;
 int inIdx;
 int meet[1010];
 
-void meetCal()
+void enter(int x)
 {
-	for(int i = 1; i <= N; i++)
+	inRoom[x] = 1;
+	
+	for(int i = 0; i < room.size(); i++)
 	{
-		if(inRoom[i] == 1)
+		meet[room[i]]++;
+	}
+	meet[x] = room.size();
+	
+	room.push_back(x);	
+}
+
+void leave(int x)
+{
+	for(int i = 0; i < room.size(); i++)
+	{
+		if(room[i] == x)
 		{
-			meet[i] += (int)room.size();
+			room.erase(room.begin() + i);
+			break;
 		}
 	}
 }
@@ -43,22 +57,16 @@ int main(void)
 		// 방에 있어야 나감 
 		while(inRoom[cur_out] == 0)
 		{
-			room.push_back(in[++inIdx]);
-			inRoom[in[inIdx]] = 1;
+			enter(in[++inIdx]);
 		}
 		
-		// 만난사람 계산
-		meetCal();
-		
-		// 방에서 나가기 
-		inRoom[cur_out] = 0;
-		room.pop_back();
+		leave(cur_out);
 	}
 	
 	for(int i = 1; i <= N; i++)
 	{
-		cout << meet[i]-1 << " ";
-	} 
+		cout << meet[i] << " ";
+	}
  	
 	return 0;
 }
