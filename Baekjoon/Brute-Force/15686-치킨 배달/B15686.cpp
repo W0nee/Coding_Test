@@ -5,127 +5,75 @@
 #include <algorithm>
 using namespace std;
 
-int ladder[40][20];
-int N, M, H;
-bool Flag = false;
+int Map[55][55];
+int N, M;
+int Min = 987654321;
+vector<pair<int, int>> chicken;
+vector<pair<int, int>> house;
+vector<pair<int, int>> list;
 
-int check()
+int cal()
 {
-	for(int i = 1; i <= N; i++) 
-	{
-		int nowX = 1;
-		int nowY = i;
-		
-		while(1)
-		{
-			if(ladder[nowX][nowY] == 1) 
-			{
-				nowX++;
-				nowY++;
-			}
-			else if(ladder[nowX][nowY-1] == 1)
-			{
-				nowX++;
-				nowY--;
-			}
-			else
-			{
-				nowX++;
-			}
-			
-			if(nowX == H+1)
-			{
-				if(nowY == i)
-				{
-					break;
-				}
-				else
-				{
-					return 0;
-				}
-			}
-		}
-	}	
+	int sum = 0;
 	
-	return 1;
+	for(int i = 0; i < house.size(); i++)
+	{
+		int Min = 987654321;
+		
+		for(int j = 0; j < list.size(); j++)
+		{
+			Min = min(Min, abs(house[i].first-list[j].first) + abs(house[i].second-list[j].second));
+		}
+		
+		sum += Min;
+	}
+	
+	return sum;
 }
 
-void DFS(int idx, int cnt, int k) 
+void DFS(int idx, int cnt) 
 {	
-	if(cnt == k)
+	if(cnt == M)
 	{
-		if(check() == 1)
-		{
-			Flag = true;
-		}
-		
+		Min = min(Min, cal());
 		return;
 	}
 	
-	for(int i = idx; i <= H; i++)
+	for(int i = idx; i < chicken.size(); i++)
 	{
-		for(int j = 1; j <= N-1; j++)
-		{
-			if(ladder[i][j-1] == 1 || ladder[i][j] == 1) 
-			{
-				continue;
-			}	
-			
-			if(j == N-1)
-			{
-				ladder[i][j] = 1;
-				DFS(i+1, cnt+1, k);
-				ladder[i][j] = 0;
-			}
-			else
-			{
-				ladder[i][j] = 1;
-				DFS(i, cnt+1, k);
-				ladder[i][j] = 0;
-			}
-			
-			if(Flag)
-			{
-				return;
-			}
-		}
-		
-		if(Flag)
-		{
-			return;
-		}
+		list.push_back({chicken[i].first, chicken[i].second});
+		DFS(i+1, cnt+1);
+		list.pop_back();
 	}
+	
 }
 
 int main(void)
 {
 //	freopen("B15686_input.txt", "r", stdin);
 
-	cin >> N >> M >> H;
+	cin >> N >> M;
 	
-	for(int i = 1; i <= M; i++) 
+	for(int i = 1; i <= N; i++) 
 	{
-		
-		int a, b;
-		cin >> a >> b;
-		
-		ladder[a][b] = 1;
-	}
-	
-	for(int i = 0; i <= 3; i++) 
-	{
-		DFS(1, 0, i);
-		if(Flag)
+		for(int j = 1; j <= N; j++)
 		{
-			cout << i;
-			return 0;
+			cin >> Map[i][j];
+			
+			if(Map[i][j] == 1)
+			{
+				house.push_back({i, j});
+			}
+			else if(Map[i][j] == 2)
+			{
+				chicken.push_back({i, j});
+			}
 		}
 	}
 	
-	if(Flag == false)
-	{
-		cout << "-1";
-	}
+	DFS(0, 0);
+	
+	cout << Min;
 	
 	return 0;
 }
