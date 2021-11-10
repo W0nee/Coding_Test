@@ -10,7 +10,7 @@ using namespace std;
 
 int N;
 int grape[10010];
-int dp[10010][4];
+int dp[10010][5];
 
 int solve(int n, int cnt)
 {
@@ -25,13 +25,13 @@ int solve(int n, int cnt)
 	}
 	dp[n][cnt] = 0;
 	
-	if(cnt == 1)
+	if(cnt == 0)
 	{
-		dp[n][cnt] = max({dp[n][cnt], grape[n] + solve(n+1, 2), grape[n] + solve(n+2, 1)});
+		dp[n][cnt] += max(solve(n+1, 1), solve(n+2, 0)) + grape[n];
 	}
-	else if(cnt == 2)
+	else if(cnt == 1)
 	{
-		dp[n][cnt] = max({dp[n][cnt], grape[n] + solve(n+2, 1), grape[n] + solve(n+3, 1)});
+		dp[n][cnt] += max(solve(n+2, 0), solve(n+3, 0)) + grape[n];
 	}
 	
 	return dp[n][cnt];
@@ -50,7 +50,7 @@ int main(void)
 		cin >> grape[i];
 	}
 	
-	cout << max(solve(1, 1), solve(2, 1));
+	cout << max(solve(0, 0), solve(1, 0));
 	
 	return 0;
 }

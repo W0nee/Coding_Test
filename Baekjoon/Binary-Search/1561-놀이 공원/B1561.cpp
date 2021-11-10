@@ -64,7 +64,6 @@ int main(void)
 		check += (time-1) / ride[i];
 	}
 	
-	
 	// (time)에 딱 탄 사람의 수 구함으로써, 마지막 사람 구하기 -> 나머지가 0 
 	long long rest = N-check;
 	int cnt = 0;
