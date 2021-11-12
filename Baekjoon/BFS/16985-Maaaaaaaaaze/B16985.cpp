@@ -48,6 +48,7 @@ void rotate(int k, int cnt)
 	{
 		for(int j = 1; j <= 5; j++)
 		{
+			New_Map[i][j][k] = Map[i][j][k];
 			Temp_Map[i][j][k] = Map[i][j][k];		
 		}
 	}
@@ -145,8 +146,6 @@ void remake()
 				New_Map[i][j][map_order[k]] = Temp_Map[i][j][k];
 			}
 		}	
-		
-		cout << "* : " << map_order[k] << " " << k << endl;
 	}	
 }
 
@@ -159,35 +158,6 @@ void map_check(int cnt)
 		if(New_Map[1][1][1] == 1 && New_Map[5][5][5] == 1)
 		{
 			BFS();	
-			
-			cout << "==========================\n";
-			for(int i = 1; i <= 5; i++)
-			{
-				cout << rotate_count[i] << " ";
-			}
-			cout << endl;
-			for(int i = 1; i <= 5; i++)
-			{
-				cout << map_order[i] << " ";
-			}
-			cout << Min << endl;
-			
-			cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
-			
-			for(int k = 1; k <= 5; k++)
-			{
-				for(int i = 1; i <= 5; i++)
-				{
-					for(int j = 1; j <= 5; j++)
-					{
-						cout << New_Map[i][j][k] << " ";		
-					}
-					cout << endl;
-				}	
-				cout << endl;
-			}
-			
-			cout << "==========================\n";
 		}
 		
 		return;
@@ -208,7 +178,7 @@ void map_check(int cnt)
 void rotate_check(int cnt)
 {
 	if(cnt == 6)
-	{
+	{	
 		map_check(1);
 		return;
 	}
