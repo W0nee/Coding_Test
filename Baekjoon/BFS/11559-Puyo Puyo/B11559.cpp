@@ -3,24 +3,21 @@
 #include <queue>
 #include <map>
 #include <string>
+#include <string.h>
 #include <algorithm>
 using namespace std;
 
-int N;
-int Map[110][110];
-int color;
-vector<pair<int, int>> outside[10010];
-int Min = 987654321;
-
-queue<pair<int, int>> q;
-int visited[110][110];
+char Map[20][10];
+int check[20][10];
+bool Flag = false;
+int num;
 
 int dx[4] = {-1, 1, 0, 0};
 int dy[4] = {0, 0, -1, 1};
 
 int safe(int x, int y)
 {
-	if(1 <= x && x <= N && 1 <= y && y <= N)
+	if(1 <= x && x <= 12 && 1 <= y && y <= 6)
 	{
 		return 1;
 	}
@@ -30,85 +27,19 @@ int safe(int x, int y)
 	}
 }
 
-void paint(int x, int y, int color)
-{
-	q.push({x, y});
-	visited[x][y] = 1;
-	Map[x][y] = color;
-	
-	while(!q.empty())
-	{
-		int x = q.front().first;
-		int y = q.front().second;
-		q.pop();
-		
-		for(int i = 0; i < 4; i++)
-		{
-			int nx = x+dx[i];
-			int ny = y+dy[i];
-			
-			if(safe(nx, ny) == 0)
-			{
-				continue;
-			}
-			
-			if(Map[nx][ny] == 1 && visited[nx][ny] == 0)
-			{
-				q.push({nx, ny});
-				visited[nx][ny] = 1;
-				Map[nx][ny] = color;
-			}
-		}
-	}	
-}
-
-void find_outside(int color)
-{
-	for(int i = 1; i <= N; i++)
-	{
-		for(int j = 1; j <= N; j++)
-		{
-			if(Map[i][j] == color)
-			{
-				for(int k = 0; k < 4; k++)
-				{
-					int nx = i+dx[k];
-					int ny = j+dy[k];
-					
-					if(safe(nx, ny) == 0)
-					{
-						continue;
-					}
-					
-					if(Map[nx][ny] == 0)
-					{
-						outside[color].push_back({i, j});
-						break;
-					}
-				}	
-			}
-		}
-	}
-}
-
-void connect(int color)
+void bomb(int x, int y, char color)
 {
 	queue<pair<int, int>> q;
-	int visited[110][110] = {0};
+	vector<pair<int, int>> list;
 	
-	for(int i = 0; i < outside[color].size(); i++)
-	{
-		int x = outside[color][i].first;
-		int y = outside[color][i].second;
-		
-		q.push({x, y});
-		visited[x][y] = 1;
-	}
+	q.push({x, y});
+	check[x][y] = 1;
+	list.push_back({x, y});
 	
 	while(!q.empty())
 	{
-		int x = q.front().first;
-		int y = q.front().second;
+		x = q.front().first;
+		y = q.front().second;
 		q.pop();
 		
 		for(int i = 0; i < 4; i++)
@@ -121,56 +52,93 @@ void connect(int color)
 				continue;
 			}
 			
-			if(Map[nx][ny] == 0 && visited[nx][ny] == 0)
+			if(Map[nx][ny] == color && check[nx][ny] == 0)
 			{
 				q.push({nx, ny});
-				visited[nx][ny] = visited[x][y] + 1;
-			}
-			else if(Map[nx][ny] != 0 && Map[nx][ny] != color)
-			{
-				Min = min(Min, visited[x][y] - 1);
-				break;
+				check[nx][ny] = 1;
+				list.push_back({nx, ny});
 			}
 		}
-	}		
+	}
+	
+	if(list.size() >= 4)
+	{
+		Flag = true;
+		
+		for(int i = 0; i < list.size(); i++)
+		{
+			x = list[i].first;
+			y = list[i].second;
+			
+			Map[x][y] = '.';
+		}
+	}
+}
+
+void down()
+{
+	for(int j = 1; j <= 6; j++)
+	{
+		vector<char> temp;
+		
+		for(int i = 12; i >= 1; i--)
+		{
+			if(Map[i][j] != '.')
+			{
+				temp.push_back(Map[i][j]);
+				Map[i][j] = '.';
+			}
+		}
+		
+		for(int i = 0; i < temp.size(); i++)
+		{
+			Map[12-i][j] = temp[i];
+		}
+	}
 }
 
 int main(void)
 {
-//	freopen("B2146_input.txt", "r", stdin);
+//	freopen("B11559_input.txt", "r", stdin);
 	
-	cin >> N;
-	
-	for(int i = 1; i <= N; i++)
+	for(int i = 1; i <= 12; i++)
 	{
-		for(int j = 1; j <= N; j++)
+		string temp;
+		cin >> temp;
+		
+		for(int j = 1; j <= 6; j++)
 		{
-			cin >> Map[i][j];
+			Map[i][j] = temp[j-1];
 		}
 	}
 	
-	for(int i = 1; i <= N; i++)
+	while(1)
 	{
-		for(int j = 1; j <= N; j++)
+		memset(check, 0, sizeof(check));
+		Flag = false;
+	
+		for(int i = 1; i <= 12; i++)
 		{
-			if(Map[i][j] != 0 && visited[i][j] == 0)
+			for(int j = 1; j <= 6; j++)
 			{
-				paint(i, j, ++color);
+				if(Map[i][j] != '.' && check[i][j] == 0)
+				{
+					bomb(i, j, Map[i][j]);
+				}
 			}
 		}
+		
+		if(Flag == false)
+		{
+			cout << num;
+			break;
+		}
+		else
+		{
+			num++;
+			down();
+		}
 	}
-	
-	for(int i = 1; i <= color; i++)
-	{
-		find_outside(i);
-	}
-	
-	for(int i = 1; i <= color; i++)
-	{
-		connect(i);
-	}
-	
-	cout << Min;
-	
+
 	return 0;
 }
