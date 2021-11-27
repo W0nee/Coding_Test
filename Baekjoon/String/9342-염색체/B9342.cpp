@@ -9,53 +9,81 @@
 #include <algorithm>
 using namespace std;
 
+int T;
 string s;
-string c4;
-vector<char> v;
 
-int main(void)
+int check()
 {
-//	freopen("B9935_input.txt", "r", stdin);
-	
-	cin >> s >> c4;
-	
-	for(int i = 0; i < s.size(); i++)
+	if('G' <= s[0] && s[0] <= 'Z')
 	{
-		v.push_back(s[i]);
-		
-		if(s[i] == c4[c4.size()-1])
+		return 0;
+	}	
+	
+	string chkS = "";
+	char now = s[0];
+	chkS += now;
+	
+	for(int i = 1; i < s.size(); i++)
+	{
+		if(now != s[i])
 		{
-			int idx = v.size()-1;
-			for(int j = c4.size()-1; j >= 0; j--)
-			{
-				if(v[idx] != c4[j])
-				{
-					break;
-				}
-				
-				idx--;
-				
-				if(j == 0)
-				{
-					for(int k = 1; k <= c4.size(); k++)
-					{
-						v.pop_back();	
-					}
-				}
-			}
+			chkS += s[i];
+			now = s[i];
+		}	
+	}
+		
+	if(chkS.size() == 3)
+	{
+		if(chkS == "AFC")
+		{
+			return 1;
+		}
+	}
+	else if(chkS.size() == 4)
+	{
+		string tempS1 = chkS.substr(0, 3);
+		string tempS2 = chkS.substr(1, 3);
+
+		if(tempS1 == "AFC" && 'A' <= chkS[3] && chkS[3] <= 'F')
+		{
+			return 1;
+		}
+		else if('A' <= chkS[0] && chkS[0] <= 'F' && tempS2 == "AFC")
+		{
+			return 1;
+		}
+	}
+	else if(chkS.size() == 5)
+	{
+		string tempS = chkS.substr(1, 3);
+		
+		if('A' <= chkS[0] && chkS[0] <= 'F' && tempS == "AFC" && 'A' <= chkS[4] && chkS[4] <= 'F')
+		{
+			return 1;
 		}
 	}
 	
-	if(v.size() == 0)
+	return 0;
+}
+
+int main(void)
+{
+//	freopen("B9342_input.txt", "r", stdin);
+	
+	cin >> T;
+	
+	while(T--)
 	{
-		cout << "FRULA";
-	}
-	else
-	{
-		for(int i = 0; i < v.size(); i++)
+		cin >> s;
+		
+		if(check())
 		{
-			cout << v[i];
-		}	
+			cout << "Infected!\n";
+		}
+		else
+		{
+			cout << "Good\n";
+		}
 	}
 	
 	return 0;
