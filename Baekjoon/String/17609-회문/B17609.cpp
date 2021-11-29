@@ -10,8 +10,45 @@
 using namespace std;
 
 int T;
-map<string, int> dic;
-vector<string> list;
+string s;
+bool palin, similar;
+
+void check(int left, int right, int cnt)
+{
+	if(left > right)
+	{
+		if(cnt == 0)
+		{
+			palin = true;
+		}
+		else if(cnt == 1)
+		{
+			similar = true;
+		}
+		
+		return;
+	}
+	
+	if(s[left] == s[right])
+	{
+		check(left+1, right-1, cnt);
+	}
+	else
+	{
+		if(cnt == 0)
+		{
+			if(s[left+1] == s[right])
+			{
+				check(left+1, right, cnt+1);
+			}
+			
+			if(s[left] == s[right-1])
+			{
+				check(left, right-1, cnt+1);	
+			}
+		}
+	}
+}
 
 int main(void)
 {
@@ -19,35 +56,27 @@ int main(void)
 	
 	cin >> T;
 	
-	for(int i = 1; i <= N; i++)
+	while(T--)
 	{
-		string file;
-		cin >> file;
+		cin >> s;
 		
-		int dotIdx;
-		for(int i = 0; i < file.size(); i++)
+		palin = false;
+		similar = false;
+		
+		check(0, s.size()-1, 0);
+		
+		if(palin)
 		{
-			if(file[i] == '.')
-			{
-				dotIdx = i;
-				break;
-			}
+			cout << "0\n";
 		}
-		
-		string ext = file.substr(dotIdx+1);
-		
-		if(dic[ext] == 0)
+		else if(similar)
 		{
-			list.push_back(ext);
+			cout << "1\n";
 		}
-		dic[ext]++;
-	}
-	
-	sort(list.begin(), list.end());
-	
-	for(int i = 0; i < list.size(); i++)
-	{
-		cout << list[i] << " " << dic[list[i]] << "\n";
+		else
+		{
+			cout << "2\n";
+		}
 	}
 	
 	return 0;
