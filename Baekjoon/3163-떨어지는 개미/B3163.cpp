@@ -34,8 +34,8 @@ int main(void)
 		}
 		
 //		sort(ant+1, ant+N+1);
-		
 //		cout << ant[K].second << endl;
+
 		while(K--)
 		{
 			if(a
