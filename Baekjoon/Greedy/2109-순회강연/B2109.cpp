@@ -1,32 +1,18 @@
 #include <stdio.h>
 #include <iostream>
 #include <queue>
+#include <stack>
+#include <map>
+#include <string>
+#include <string.h>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
 int N;
-vector<pair<int, int>> v;
-int visited[10010];
-int Max;
-
-bool cmp(pair<int, int> a, pair<int, int> b)
-{
-	if(a.first > b.first)
-	{
-		return true;
-	}
-	else if(a.first == b.first)
-	{
-		if(a.second > b.second)
-		{
-			return true;
-		}
-		
-		return false;
-	}
-	
-	return false;
-}
+int check[10010];
+vector<pair<int, int>> list;
+int ans;
 
 int main(void)
 {
@@ -34,59 +20,33 @@ int main(void)
 	
 	cin >> N;
 	
-	int date_max = 0;
-	for(int i = 0; i < N; i++)
+	for(int i = 1; i <= N; i++)
 	{
-		int a, b;
-		cin >> a >> b;
+		int p, d;
+		cin >> p >> d;
 		
-		v.push_back({a, b});
-		
-		if(date_max < b)
-		{
-			date_max = b;
-		}
+		list.push_back({p, d});
 	}
 	
-	sort(v.begin(), v.end(), cmp);
+	sort(list.begin(), list.end(), greater<pair<int, int>>());
 	
-//	for(int i = 0; i < N; i++)
-//	{
-//		cout << v[i].first << " " << v[i].second << endl;
-//	}
-	
-	int date = 1;
-	int idx = 0;
-	while(date <= date_max)
+	for(int i = 0; i < list.size(); i++)
 	{
-		for(int i = idx; i < N; i++)
+		int price = list[i].first;
+		int day = list[i].second;
+		
+		for(int j = day; j >= 1; j--)
 		{
-			bool flag = false;
-			
-			for(int j = v[i].second; j >= 1; j--)
+			if(check[j] == 0)
 			{
-				if(visited[j] == 0)
-				{
-					flag = true;
-					
-					visited[j] = 1;
-					idx = i+1;
-					Max += v[i].first;
-					break;
-				}
-			}
-			
-			if(flag)
-			{
+				check[j] = 1;
+				ans += price;
 				break;
 			}
-			
 		}
-
-		date++;
 	}
 	
-	cout << Max;
+	cout << ans;
 	
 	return 0;
 }
