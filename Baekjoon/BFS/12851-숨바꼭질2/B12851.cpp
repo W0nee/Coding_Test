@@ -1,26 +1,17 @@
 #include <stdio.h>
 #include <iostream>
 #include <queue>
+#include <stack>
 #include <map>
 #include <string>
 #include <string.h>
-#include <math.h>
+#include <vector>
 #include <algorithm>
 using namespace std;
 
 int N, K;
-map<int, int> num;
 int Min = 987654321;
-
-int safe(int x)
-{
-	if(0 <= x && x <= 100000)
-	{
-		return 1;
-	}
-	
-	return 0;
-}
+int ans;
 
 void BFS()
 {
@@ -37,28 +28,33 @@ void BFS()
 		
 		if(x == K)
 		{
-			Min = min(Min, visited[x]-1);
-			num[visited[x]-1] += 1;
+			if(Min > visited[x] - 1)
+			{
+				Min = visited[x] - 1;
+				ans = 1;
+			}
+			else if(Min == visited[x] - 1)
+			{
+				ans++;	
+			}
+			
+			continue;
 		}
 		
-		for(int i = 0; i <= 2; i++)
+		for(int i = 1; i <= 3; i++)
 		{
 			int nx;
 			
-			if(i == 0)
+			if(i == 1) nx = x + 1;
+			else if(i == 2) nx = x - 1;
+			else if(i == 3) nx = x * 2;
+			
+			if(!(0 <= nx && nx <= 100000))
 			{
-				nx = x - 1; 
+				continue;
 			}
-			else if(i == 1)
-			{
-				nx = x + 1;
-			}
-			else 
-			{
-				nx = 2 * x;
-			}
-		
-			if(safe(nx) == 1 && (visited[nx] == 0 || visited[x] + 1 <= visited[nx]))
+			
+			if(visited[nx] == 0 || visited[x] + 1 <= visited[nx])
 			{
 				q.push(nx);
 				visited[nx] = visited[x] + 1;
@@ -67,17 +63,16 @@ void BFS()
 	}	
 }
 
-
 int main(void)
 {
 //	freopen("B12851_input.txt", "r", stdin);
 	
 	cin >> N >> K;
-
+	
 	BFS();
 	
 	cout << Min << endl;
-	cout << num[Min] << endl;
+	cout << ans << endl;
 	
 	return 0;
 }
