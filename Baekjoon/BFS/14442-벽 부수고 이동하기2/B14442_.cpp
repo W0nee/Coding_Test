@@ -7,9 +7,14 @@
 #include <algorithm>
 using namespace std;
 
+typedef struct node{
+	int x;
+	int y;
+	int cnt;
+}node;
+
 int Map[1010][1010];
-int visited[1010][1010];
-int dist[1010][1010];
+int visited[1010][1010][11];
 
 int row, col, crash;
 int ans = 99999999;
@@ -19,7 +24,7 @@ int dy[4] = {0, 0, -1, 1};
 
 int safe(int x, int y)
 {
-	if(0 <= x && x < row && 0 <= y && y < col)
+	if(1 <= x && x <= row && 1 <= y && y <= col)
 	{
 		return 1;
 	}
@@ -29,58 +34,44 @@ int safe(int x, int y)
 	}
 }
 
-void BFS(int x, int y)
+void BFS()
 {
-	queue<pair<int, int>> q;
+	queue<node> q;
 	
-	q.push({x, y});
-	visited[x][y] = 1;
-	dist[x][y] = 0;
+	q.push({1, 1, 0});
+	visited[1][1][0] = 1;
 	
 	while(!q.empty())
 	{
-		x = q.front().first;
-		y = q.front().second;
+		int x = q.front().x;
+		int y = q.front().y;
+		int cnt = q.front().cnt;
 		q.pop();
 		
-		if(x == row-1 && y == col-1)
+		if(x == row && y == col)
 		{
-			ans = min(ans, visited[x][y]);
+			ans = min(ans, visited[x][y][cnt]);
 		}
 		
 		for(int i = 0; i < 4; i++)
 		{
-			int nx = x+dx[i];
-			int ny = y+dy[i];
+			int nx = x + dx[i];
+			int ny = y + dy[i];
 			
 			if(safe(nx, ny) == 0)
 			{
 				continue;
 			}
 			
-			if(Map[nx][ny] == 0 && visited[nx][ny] == 0)
+			if(Map[nx][ny] == 0 && visited[nx][ny][cnt] == 0)
 			{
-				q.push({nx, ny});
-				visited[nx][ny] = visited[x][y] + 1;
-				dist[nx][ny] = dist[x][y];
+				q.push({nx, ny, cnt});
+				visited[nx][ny][cnt] = visited[x][y][cnt] + 1;
 			}
-			else if(Map[nx][ny] == 0 && visited[nx][ny] != 0 && dist[x][y] < dist[nx][ny])
+			else if(Map[nx][ny] == 1 && visited[nx][ny][cnt+1] == 0 && cnt+1 <= crash)
 			{
-				q.push({nx, ny});
-				visited[nx][ny] = visited[x][y] + 1;
-				dist[nx][ny] = dist[x][y];
-			}
-			else if(Map[nx][ny] == 1 && visited[nx][ny] == 0 && dist[x][y] + 1 <= crash)
-			{
-				q.push({nx, ny});
-				visited[nx][ny] = visited[x][y] + 1;
-				dist[nx][ny] = dist[x][y] + 1;
-			}
-			else if(Map[nx][ny] == 1 && visited[nx][ny] != 0 && dist[x][y] + 1 < dist[nx][ny] && dist[x][y] + 1 <= crash)
-			{
-				q.push({nx, ny});
-				visited[nx][ny] = visited[x][y] + 1;
-				dist[nx][ny] = dist[x][y] + 1;
+				q.push({nx, ny, cnt+1});
+				visited[nx][ny][cnt+1] = visited[x][y][cnt] + 1;
 			}
 		}
 	}
@@ -92,17 +83,15 @@ int main(void)
 
 	cin >> row >> col >> crash;
 	
-	for(int i = 0; i < row; i++)
+	for(int i = 1; i <= row; i++)
 	{
-		for(int j = 0; j < col; j++)
+		for(int j = 1; j <= col; j++)
 		{
 			scanf("%1d", &Map[i][j]);
-			
-			dist[i][j] = 99999999;
 		}
 	}
 	
-	BFS(0, 0);
+	BFS();
 	
 	if(ans == 99999999)
 	{
